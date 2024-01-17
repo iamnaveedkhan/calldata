@@ -1,0 +1,35 @@
+@page {
+  size: a4;
+  background-image: url('static/image/A4_1.png');
+}
+.font{
+  font-size: 20px;
+  padding-left: 20px;
+  font-weight: bold;
+}
+.font1{
+  padding-top: 20px;
+  font-size: 20px;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+.stamp{
+  padding-top: 50px;
+  text-align: right;
+  margin-right: 70px;
+}
+.footer{
+  font-size: 20px;
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: -120px;
+}
+.logo{
+  padding-left: 70px;
+  padding-top: 100px;
+}
+.logo101{
+  padding-top: -70px;
+  text-align: right;
+  margin-right: 110px;
+}
