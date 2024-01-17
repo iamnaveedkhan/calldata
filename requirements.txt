@@ -1,3 +1,6 @@
+MYSQLCLIENT_CFLAGS=-I/path/to/mysql/headers
+MYSQLCLIENT_LDFLAGS=-L/path/to/mysql/lib -lmysqlclient
+
 asgiref==3.7.2
 certifi==2023.11.17
 charset-normalizer==3.3.2
