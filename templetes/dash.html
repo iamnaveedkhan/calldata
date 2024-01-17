@@ -1,0 +1,233 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me="DashBoard" %}
+        <!-- main content start -->
+        <!-- graph start -->
+      {% if user.is_authenticated %}
+      <div class="row container-fluid">
+        <div class="col-md-12 h-75">
+        <div class="row text-justify mt-5 mx-auto">
+          <div class="col-md-3">
+            <div class="col-md-2 card text-bg-primary w-100 custom1">
+            <div class="card-body shadow-lg">
+              <div class="row">
+              <div class="col-md-8">
+              <h6 class="card-title">TODAY</h6>
+              <h3 class="card-text">{{today}}</h3>
+              {% if today > 1 %}
+              <h6 class="card-text">Customer(s)</h6>
+              {% else %}
+              <h6 class="card-text">Customer</h6>
+              {% endif %}
+              {% if request.user.role == 1 %}
+              <h6 class="card-text"><i class="bi bi-currency-rupee"></i>{{amt_today}}</h6>
+              {% endif %}
+              </div>
+              <div class="col-md-4">
+                <img src="../static/image/dashboard/dash_today.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="...">
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 h-75">
+          <div class="col-md-2 card text-bg-primary w-100 custom2" >
+            <div class="card-body shadow-lg">
+              <div class="row">
+              <div class="col-md-8">
+              <h6 class="card-title">THIS WEEK</h6>
+              <h3 class="card-text">{{week}}</h3>
+              {% if week > 1 %}
+              <h6 class="card-text">Customer(s)</h6>
+              {% else %}
+              <h6 class="card-text">Customer</h6>
+              {% endif %}
+              {% if request.user.role == 1 %}
+              <h6 class="card-text"><i class="bi bi-currency-rupee"></i>{{amt_week}}</h6>
+              {% endif %}
+            </div>
+            <div class="col-md-4">
+              <img src="../static/image/dashboard/dash_week.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="...">
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 h-75">
+          <div class="col-md-2 card text-bg-primary w-100 custom3">
+            <div class="card-body shadow-lg">
+              <div class="row">
+              <div class="col-md-8">
+              <h6 class="card-title">THIS MONTH</h6>
+              <h3 class="card-text">{{month}}</h3>
+              {% if month > 1 %}
+              <h6 class="card-text">Customer(s)</h6>
+              {% else %}
+              <h6 class="card-text">Customer</h6>
+              {% endif %}
+              {% if request.user.role == 1 %}
+              <h6 class="card-text"><i class="bi bi-currency-rupee"></i>{{amt_month}}</h6>
+              {% endif %}
+            </div>
+            <div class="col-md-4">
+              <img src="../static/image/dashboard/dash_month.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="...">
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 h-75">
+          <div class="col-md-2 card text-bg-primary w-100 custom4"  >
+            <div class="card-body shadow-lg">
+              <div class="row">
+              <div class="col-md-8">
+              <h6 class="card-title">ALL TIME</h6>
+              <h3 class="card-text">{{all}}</h3>
+              {% if all > 1 %}
+              <h6 class="card-text">Customer(s)</h6>
+              {% else %}
+              <h6 class="card-text">Customer</h6>
+              {% endif %}
+              {% if request.user.role == 1 %}
+              <h6 class="card-text"><i class="bi bi-currency-rupee"></i>{{amt_all}}</h6>
+              {% endif %}
+            </div>
+            <div class="col-md-4">
+              <img src="../static/image/dashboard/dash_all.png" class="card-img-top pt-4 img-fluid d-none d-sm-block"  alt="...">
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="row container-fluid">
+      
+        <canvas class="col-md-4 mt-3 mx-3" id="myChart" style="width:100%;max-width:600px"></canvas>
+        <canvas class="col-md-4 mt-3 mx-3" id="myChart1" style="width:100%;max-width:600px"></canvas>
+      
+    </div>
+    <script>
+      const xValues = ["{{last_month3_name}}","{{last_month2_name}}","{{last_month_name}}","{{month_name}}"];
+      const yValues = ["{{last_month3}}","{{last_month2}}","{{last_month}}","{{month}}"];
+      const barColors = ["red", "green","blue","orange"];
+      
+      new Chart("myChart", {
+        type: "bar",
+        data: {
+          labels: xValues,
+          datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+          }]
+        },
+        options: {
+          legend: {display: false},
+          title: {
+            display: true,
+            text: "Sales"
+          }
+        }
+      });
+      
+      const x1Values = ["Sale", "Pending"];
+      const y1Values = ["{{active}}","{{inactive}}"];
+      const barColors1 = ["green", "red",];
+      
+      new Chart("myChart1", {
+        type: "doughnut",
+        data: {
+          labels: x1Values,
+          datasets: [{
+            backgroundColor: barColors1,
+            data: y1Values
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Sales"
+          }
+        }
+      });
+        </script>
+        <!-- graph ends -->
+
+        <!-- dashborad start -->
+        <div class="container-fluid mx-auto mt-5">
+          {% if success %}
+         <h2 class="text-center mb-4 text-success">{{success}}</h2>
+         {% endif %}
+         {% if err %}
+         <h2 class="text-center mb-4 text-danger">{{err}}</h2>
+         {% endif %}
+          <h2 class="">Dashboard</h2>
+          <div class="rounded-3 border border-dark p-2 mb-3" style="background-color: #CEDAFF;">
+            <div class=" table-responsive rounded-4 border border-dark bg-white p-1">
+              <table class="table table-striped mx-auto mw-100 container-fluid" style="min-width: max-content;">
+              <thead>
+                <tr>
+                  <th class="text-center">Ref Id</th>
+                  <th class="text-center">Retailer Name</th>
+                  <th class="text-center">Mobile</th>
+                  <th class="text-center">Created On</th>
+                  <th class="text-center">Picked By</th>
+                  <th class="text-center">Shop Name</th>
+                  <th class="text-center">City</th>
+                  <th class="text-center">State</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+      
+              {% if user.is_staff %}
+                
+              <tbody>
+                <!-- Replace the loop with actual data -->
+                {% for x in data %}
+                <tr>
+                  {% if x.status == 1 %}
+                    <td class="text-center">{{x.order_id}}</td>
+                  {% else %}
+                    <td class="text-center text-danger">Not Interested</td>
+                  {% endif %}
+                  <td class="text-center">{{x.name}}</td>
+                  <td class="text-center">{{x.mob}}</td>
+                  <td class="text-center">{{x.create_date}}</td>
+                  <td class="text-center">{{x.agent_id.first_name}}</td>
+                  <td class="text-center">{{x.shop_name}}</td>
+                  <td class="text-center">{{x.city}}</td>
+                  <td class="text-center">{{x.state}}</td>
+                  <td class="text-center">
+                    <a
+                      href="http://127.0.0.1:8000/view/{{x.id}}"
+                      class="btn btn-primary viewedit"
+                    >
+                      View
+                    </a>
+                    <a
+                      href="http://127.0.0.1:8000/edit/{{x.id}}"
+                      class="btn btn-warning viewedit"
+                    >
+                      Edit
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              {% endif %}
+            </table>
+            </div>
+          </div>
+      </div>
+    </div>
+    {% else %}
+        <div class="text-center mt-5 text" >
+          <a href="/login" class="mt-5 anchor">
+              <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+          </a>  
+        </div>
+      {% endif %}
+    <!-- dashboard ends -->
+    {% include 'dashboard_footer.html' %}
+    

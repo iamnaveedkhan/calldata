@@ -1,0 +1,70 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me="Change Manager" %}
+        <!-- main content start -->
+        <!-- graph start -->
+  {% if user.is_authenticated %}
+  <h3 class="mt-3">Change Manager</h3>
+  {% if errmsg %}
+  <div class="alert alert-danger">
+      {{errmsg}}
+  </div>
+  {% endif %}
+  <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+  <div class="col-md-4 mx-auto mt-5">
+      <div class="mb-3" style="width: 50%;">
+        {% for x in data %}
+          <label for="fname" class="form-label">First Name</label><br>
+          <label for="fname" class="form-label mx-3"><strong>{{x.first_name}}</strong></label>
+      </div>
+      <div class="mb-3" style="width: 50%;">
+        <label for="lname" class="form-label">Last Name</label><br>
+        <label for="lname" class="form-label mx-3"><strong>{{x.last_name}}</strong></label>
+    </div>
+    <div class="mb-3" style="width: 50%;">
+      <label for="email" class="form-label">Manager Name</label><br>
+      <label for="email" class="form-label mx-3"><strong>{{x.manager.first_name}}</strong></label>
+    </div> 
+      <div class="mb-3" style="width: 50%;">
+        <label for="mob" class="form-label">Mobile Number</label><br>
+          <label for="mob" class="form-label mx-3"><strong>{{x.mobile}}</strong></label>
+      </div>
+      {% if request.user.role == 1 %}
+      <div class="mb-3" style="width: 50%;">
+          <label for="manager" class="form-label text-danger">Select New Manager</label><br>
+          <select name="manager" id="manager" class="mx-3">
+            <option value="{{x.manager.id}}">{{x.manager.first_name}}</option>
+              <option value="{{x.manager.id}}"></option>
+            {% for j in m_data %}  
+              <option value="{{j.id}}">{{j.first_name}}</option>
+            {% endfor %}
+          </select>
+      </div>
+      {% endif %}
+      {% endfor %}
+      <div class="mb-3 mt-4" >
+          <input type="submit" class="btn btn-danger text-center px-5" value="Update">
+      </div>
+      {% if success %}
+          <div class="alert alert-success text-center mt-5">
+              {{success}}
+          </div>
+      {% endif %}
+  </div>
+
+  </form>
+</div>  
+
+</div>
+  {% else %}
+    <div class="text-center mt-5 text" >
+      <a href="/login" class="mt-5 anchor">
+          <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+      </a>  
+    </div>
+  {% endif %}
+<!-- dashboard ends -->
+{% include 'dashboard_footer.html' %}
+    

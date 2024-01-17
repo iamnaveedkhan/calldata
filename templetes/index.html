@@ -1,0 +1,961 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Landing page template built with HTML and Bootstrap 4 for presenting training courses, classes, workshops and for convincing visitors to register using the form.">
+    <meta name="author" content="Inovatik">
+
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
+	<meta property="og:site_name" content="" /> <!-- website name -->
+	<meta property="og:site" content="" /> <!-- website link -->
+	<meta property="og:title" content=""/> <!-- title shown in the actual shared post -->
+	<meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
+	<meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
+	<meta property="og:url" content="" /> <!-- where do you want your post to link to -->
+	<meta property="og:type" content="article" />
+
+    <!-- Website Title -->
+    <title>101E-Warranty</title>
+    
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,600,700,700i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'new/css/bootstrap.css' %}">
+    <link href="{% static 'new/css/fontawesome-all.css' %}" rel="stylesheet">
+    <link href="{% static 'new/css/swiper.css' %}" rel="stylesheet">
+	<link href="{% static 'new/css/magnific-popup.css' %}" rel="stylesheet">
+	<link href="{% static 'new/css/styles.css' %}" rel="stylesheet">
+	
+	<!-- Favicon  -->
+
+    <link rel="icon" href="{% static 'new/images/logo.png' %}">
+</head>
+<body data-spy="scroll" data-target="fixed-top">
+    <div class="whatsapp-container">
+        <a href="https://api.whatsapp.com/send?phone=919167301300&text=Hello%2C%20I%20want%20to%20Enquire%20About%20*101%20Extended%20Warranty*">
+            
+            <button class="btn btn-success whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+            </button>
+        </a>
+    </div>
+    <!-- Preloader -->
+	<div class="spinner-wrapper">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+    <!-- end of preloader -->
+    
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+
+        <!-- Text Logo - Use this if you don't have a graphic logo -->
+        <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Corso</a> -->
+
+        <!-- Image Logo -->
+        <a class="navbar-brand logo-image" href="/"><img src="{% static 'new/images/logo.png' %}" alt="alternative"></a> 
+        
+        <!-- Mobile Menu Toggle Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-awesome fas fa-bars"></span>
+            <span class="navbar-toggler-awesome fas fa-times"></span>
+        </button>
+        <!-- end of mobile menu toggle button -->
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#claim">CLAIM / STATUS
+                         <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#description">DETAILS</a>
+                </li>
+
+                <!-- Dropdown Menu -->          
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle page-scroll" href="#more" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">MORE</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/faqs"><span class="item-text">FAQs</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/terms"><span class="item-text">TERMS CONDITIONS</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/privacy"><span class="item-text">PRIVACY POLICY</span></a>
+                    </div>
+                </li>
+                <!-- end of dropdown menu -->
+
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+                </li>
+            </ul>
+            <span class="nav-item social-icons">
+                <span class="fa-stack">
+                    <a href="https://www.facebook.com/profile.php?id=61550523818285">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-facebook-f fa-stack-1x"></i>
+                    </a>
+                </span>
+                <span class="fa-stack">
+                    <a href="https://api.whatsapp.com/send?phone=919167301300&text=Hello%2C%20I%20want%20to%20Enquire%20About%20*101%20Extended%20Warranty*">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-whatsapp fa-stack-1x"></i>
+                    </a>
+                </span>
+            </span>
+        </div>
+    </nav> <!-- end of navbar -->
+    <!-- end of navigation -->
+
+
+    <!-- Header -->
+    <header id="header" class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-container">
+                        
+                        <h1>Extended Warranty</h1>
+                        <p class="p-large">Welcome to our Mobile Extended Warranty program, designed to offer you peace of mind and protect your valuable investment.</p>
+                        <a class="btn-solid-lg page-scroll" href="#claim">Claim / Track
+
+                        </a>
+                        <a class="btn-outline-lg page-scroll" href="#instructor">DISCOVER</a>
+                        {% if success %}
+                        <h3 class="text-success mt-3">{{success}}</h3>
+                        {% endif %}
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+        
+        <!-- Image Slider -->
+        <div class="outer-container">
+            <div class="slider-container">
+                <div class="swiper-container image-slider-1">
+                    <div class="swiper-wrapper">
+                        
+                        <!-- Slide -->
+                        <div class="swiper-slide" >
+                            <img class="img-fluid" src="{% static 'new/images/details-slide-1.png' %}" alt="alternative">
+                        </div>
+                        <!-- end of slide -->
+
+                        <!-- Slide -->
+                        <div class="swiper-slide">
+                            <img class="img-fluid" src="{% static 'new/images/details-slide-2.png' %}" alt="alternative">
+                        </div>
+                        <!-- end of slide -->
+
+                        <!-- Slide -->
+                        <div class="swiper-slide">
+                            <img class="img-fluid" src="{% static 'new/images/details-slide-3.png' %}" alt="alternative">
+                        </div>
+                        <!-- end of slide -->
+
+                    </div> <!-- end of swiper-wrapper -->
+                    
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <!-- end of add arrows -->
+                    
+                </div> <!-- end of swiper-container -->
+            </div> <!-- end of slider-container -->
+        </div> <!-- end of outer-container -->
+        <!-- end of image slider -->
+
+    </header> <!-- end of header -->
+    <!-- end of header -->
+
+
+    <!-- Registration -->
+    <div id="claim" class="form-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h2>Claim Or Track</h2>
+                        <p>Have a question, comment, or feedback? We'd love to hear from you! Please fill out the form below, and we'll get back to you as soon as possible.</p>
+                        <ul class="list-unstyled li-space-lg">
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><strong>It's safe with us</strong> and will not be used for marketing</div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><strong>You will receive</strong> a confirmation email in less than 24h</div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><strong>For more information</strong> please review our <a href="privacy-policy.html" class="text-black">Privacy Policy</a></div>
+                            </li>
+                            
+                        </ul>
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    {% if err %}
+                    <div class="text-center mx-auto">
+                        <p class="text-danger">{{err}}</p>
+                    </div>
+                    {% endif %}
+                    <!-- Registration Form -->
+                    <div class="form-container">
+                        <form data-toggle="validator" data-focus="false" method="POST">
+                            {% csrf_token %}
+                            <!-- <div class="form-group">
+                                <input type="email" class="form-control-input" id="remail" name="remail" required>
+                                <label class="label-control" for="remail">Email address</label>
+                                <div class="help-block with-errors"></div>
+                            </div> -->
+                            <div class="form-group">
+                                <input type="text" class="form-control-input" id="rphone" name="rphone" required>
+                                <label class="label-control" for="rphone">Phone number / Order Number / IMEI number / E-Mail</label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group text-center">
+                                <label>
+                                  <input type="radio" name="res" value="1">
+                                  Claim
+                                </label>
+                                <label class="mx-5 text-center">
+                                  <input type="radio" name="res" value="0" checked>
+                                  Status
+                                </label>
+                              </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control-submit-button">SUBMIT</button>
+                            </div>
+                            <div class="form-message">
+                                <div id="rmsgSubmit" class="h3 text-center hidden"></div>
+                            </div>
+                        </form>
+                    </div> <!-- end of form-container -->
+                    <!-- end of registration form -->
+                    
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of form-1 -->
+    <!-- end of registration -->
+
+
+    <!-- Partners -->
+    <div class="slider-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="p-small">Brands</p>
+
+                    <!-- Image Slider -->
+                    <div class="slider-container">
+                        <div class="swiper-container image-slider-2">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                        <img class="img-fluid grayscale-img" src="{% static 'new/images/samsung.png' %}" alt="alternative">
+                                </div>
+                                <div class="swiper-slide">
+                                    <img class="img-fluid grayscale-img" src="{% static 'new/images/xiaomi.png' %}" alt="alternative">
+                                </div>
+                                <div class="swiper-slide">
+                                        <img class="img-fluid grayscale-img" src="{% static 'new/images/oppo.png' %}" alt="alternative">
+                                </div>
+                                <div class="swiper-slide">
+                                    <img class="img-fluid grayscale-img" src="{% static 'new/images/oneplus.png' %}" alt="alternative">
+                                </div>
+                                <div class="swiper-slide">
+                                    <img class="img-fluid grayscale-img" src="{% static 'new/images/nokia.png' %}" alt="alternative">
+                                </div>
+                                <div class="swiper-slide">
+                                    <img class="img-fluid grayscale-img" src="{% static 'new/images/apple.png' %}" alt="alternative">
+                                </div>
+                                <div class="swiper-slide">
+                                        <img class="img-fluid grayscale-img" src="{% static 'new/images/realme.png' %}" alt="alternative">
+                                </div>
+                                <div class="swiper-slide">
+                                    <img class="img-fluid grayscale-img" src="{% static 'new/images/vivo.png' %}" alt="alternative">
+                                </div>
+                            </div> <!-- end of swiper-wrapper -->
+                        </div> <!-- end of swiper container -->
+                    </div> <!-- end of slider-container -->
+                    <!-- end of image slider -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of slider-1 -->
+    <!-- end of partners -->
+
+
+    <!-- Instructor -->
+    <div id="instructor" class="basic-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img class="img-fluid" src="{% static 'new/images/instructor.jpg' %}" alt="alternative">
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h2>Why Extended Warranty?</h2>
+                        <h5>Prolonged Protection</h5>
+                        <p>Enjoy an extra year of coverage beyond the standard warranty period. This means you'll have an added layer of protection against unexpected hardware and software issues.</p>
+                        <p>No one wants to deal with unexpected issues. With our One Year Extra Warranty, you can have peace of mind knowing that you're covered for an additional year.</p>
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-1 -->
+    <!-- end of instructor -->
+
+    <!-- Description -->
+    <div id="description" class="basic-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Why Choose 101 Extended Warranty?</h2>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="list-unstyled li-space-lg first">
+                        <li class="media">
+                            <i class="bullet">1</i>
+                            <div class="media-body">
+                                <h4>Fast-Track Repairs:</h4>
+                                <p>expedited service with extended warranties, ensuring quicker turnaround times for repairs</p>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <i class="bullet">2</i>
+                            <div class="media-body">
+                                <h4>Peace of Mind Guarantee:</h4>
+                                <p>Assure customers that they're making a wise investment by offering a satisfaction guarantee. </p>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <i class="bullet">3</i>
+                            <div class="media-body">
+                                <h4> Extended Protection:</h4>
+                                <p>Enjoy an extra year of coverage beyond the standard warranty period.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    <ul class="list-unstyled li-space-lg second">
+                        <li class="media">
+                            <i class="bullet">4</i>
+                            <div class="media-body">
+                                <h4>Resale Value:</h4>
+                                <p>Having an extended warranty can enhance the resale Value</p>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <i class="bullet">5</i>
+                            <div class="media-body">
+                                <h4>No Hidden Costs:</h4>
+                                <p>Rest assured, there are no hidden fees or <br>surprises</p>
+                            </div>
+                        </li>
+                        <li class="media">
+                            <i class="bullet">6</i>
+                            <div class="media-body">
+                                <h4>Cost Savings:</h4>
+                                <p>Repair costs for Mobiles , Electronics can be significant. An extended warranty can help you avoid these unexpected expenses</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-2 -->
+    <!-- end of description -->
+
+
+    <!-- Students -->
+    <div class="basic-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h2>Don't leave the safety of your mobile device to chance</h2>
+                        <p> Protect it with 101 Extended Warranty Mobile Extended Warranty. Choose the plan that suits your needs and enjoy the peace of mind that comes with knowing your device is in good hands.</p>
+                        <a class="btn-solid-reg popup-with-move-anim" href="#details-lightbox">Get Started Today</a>
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    <img class="img-fluid" src="{% static 'new/images/why.png' %}" alt="alternative">
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-3 -->
+    <!-- end of students -->
+
+
+    <!-- Details Lightbox -->
+	<div id="details-lightbox" class="lightbox-basic zoom-anim-dialog mfp-hide">
+        <div class="container">
+            <div class="row">
+                <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
+                <div class="col-lg-8">
+                    <div class="image-container">
+                        <img class="img-fluid" src="{% static 'new/images/2.png' %}" alt="alternative">
+                    </div> <!-- end of image-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-4">
+                    <h3>101 Extended Warranty</h3>
+                    <hr>
+                    <h5>For Indian Device Only</h5>
+                    <div class="form-container">
+                        <form id="pricechk" data-toggle="validator" data-focus="false">
+                            <!-- <div class="form-group">
+                                <input type="email" class="form-control-input" id="remail" name="remail" required>
+                                <label class="label-control" for="remail">Email address</label>
+                                <div class="help-block with-errors"></div>
+                            </div> -->
+                            <div class="form-group no-spinners">
+                                <input type="number" class="form-control-input" id="inputField" name="price" required>
+                                <label class="label-control" for="inputField">Enter Price Of Your Smartphone</label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <b>Extended Warranty Price </b><i class="fas fa-rupee-sign" id="output">&nbsp;</i>
+                        </form>
+                    </div>
+                    <script>
+                        const inputField = document.getElementById('inputField');
+                        const output = document.getElementById('output');
+                        inputField.addEventListener('keyup', function() {
+                          const inputValue = parseInt(inputField.value);
+                          if (!isNaN(inputValue)) {
+                            const result = Math.round(inputValue * 0.06);
+                            output.textContent = `${result}`;
+                          } 
+                          
+                          else {
+                            output.textContent = '';
+                          }
+                        });
+                      </script>
+                      <br>
+                    <ul class="list-unstyled li-space-lg">
+                        <li class="media">
+                            <i class="fas fa-square"></i><div class="media-body">Expert Repairs</div>
+                        </li>
+                        <li class="media">
+                            <i class="fas fa-square"></i><div class="media-body">Extended Coverage</div>
+                        </li>
+                        <li class="media">
+                            <i class="fas fa-square"></i><div class="media-body">Hassle-Free Claims</div>
+                        </li>
+                        <li class="media">
+                            <i class="fas fa-square"></i><div class="media-body">Multi-Device Coverage</div>
+                        </li>
+                        <li class="media">
+                            <i class="fas fa-square"></i><div class="media-body">Technical Support</div>
+                        </li>
+                        <li class="media">
+                            <i class="fas fa-square"></i><div class="media-body">Convenience</div>
+                        </li>
+                    </ul>
+                    <a class="btn-solid-reg mfp-close page-scroll" href="#contact">Contact Us</a> <a class="btn-outline-reg mfp-close as-button" href="#screenshots">BACK</a>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of lightbox-basic -->
+    <!-- end of details lightbox -->
+
+
+    <!-- Video -->
+    <div class="basic-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Course Video Presentation</h2>
+
+                    <!-- Video Preview -->
+                    <div class="image-container">
+                        <div class="video-wrapper">
+                            <a class="popup-youtube" href="https://www.youtube.com/watch?v=fLCjQJCekTs" data-effect="fadeIn">
+                                <img class="img-fluid" src="{% static 'new/images/video.jpg' %}" alt="alternative">
+                                <span class="video-play-button">
+                                    <span></span>
+                                </span>
+                            </a>
+                        </div> <!-- end of video-wrapper -->
+                    </div> <!-- end of image-container -->
+                    <!-- end of video preview -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-4 -->
+    <!-- end of video -->
+
+
+    <!-- Takeaways -->
+    <div class="cards">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Key Features</h2>
+                    <p class="p-heading">Our extended warranty plans provide extensive coverage for a wide range of hardware and software issues, ensuring your mobile device stays protected beyond the standard manufacturer's warranty.</p>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Expert Repairs</h4>
+                            <p>Your device deserves the best care. ensuring your mobile device is in safe hands</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Hassle-Free Claims</h4>
+                            <p>101 Extended Warranty streamlined the process to make it as simple and efficient as possible</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">No Deductibles</h4>
+                            <p>We believe in straightforward coverage without hidden fees or deductibles</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Nationwide Coverage</h4>
+                            <p> 101 extended warranty plans provide coverage across the entire country</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <i class="far fa-handshake"></i>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Transparent Proccess</h4>
+                            <p>Our customer support team is readily available to address your questions.</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+
+
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Priority Services</h4>
+                            <p>As a One Year Extra Warranty holder, you'll receive priority service <br>.</p>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+                    
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of cards -->
+    <!-- end of takeaways -->
+
+
+    <!-- Testimonials -->
+    <div class="slider-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Check out our customers testimonials</h3>
+
+                    <!-- Text Slider -->
+                    <div class="slider-container">
+                        <div class="swiper-container text-slider">
+                            <div class="swiper-wrapper">
+                                
+                                <!-- Slide -->
+                                <div class="swiper-slide">
+                                    <div class="image-wrapper">
+                                        <img class="img-fluid" src="{% static 'new/images/testimonial-1.jpg' %}" alt="alternative">
+                                    </div> <!-- end of image-wrapper -->
+                                    <div class="text-wrapper">
+                                        <div class="testimonial-text">The support team guided me through every step, and my phone was repaired and returned to me in no time. It was a lifesaver!</div>
+                                        <div class="testimonial-author">Reyansh Sharma</div>
+                                    </div> <!-- end of text-wrapper -->
+                                </div> <!-- end of swiper-slide -->
+                                <!-- end of slide -->
+
+                                <!-- Slide -->
+                                <div class="swiper-slide">
+                                    <div class="image-wrapper">
+                                        <img class="img-fluid" src="{% static 'new/images/testimonial-2.jpg' %}" alt="alternative">
+                                    </div> <!-- end of image-wrapper -->
+                                    <div class="text-wrapper">
+                                        <div class="testimonial-text">When my phone's battery started acting up, they took care of it without a hitch. It's like having a safety net for my mobile devices.</div>
+                                        <div class="testimonial-author">Deval Singh</div>
+                                    </div> <!-- end of text-wrapper -->
+                                </div> <!-- end of swiper-slide -->
+                                <!-- end of slide -->
+
+                                <!-- Slide -->
+                                <div class="swiper-slide">
+                                    <div class="image-wrapper">
+                                        <img class="img-fluid" src="{% static 'new/images/testimonial-3.jpg' %}" alt="alternative">
+                                    </div> <!-- end of image-wrapper -->
+                                    <div class="text-wrapper">
+                                        <div class="testimonial-text">"I've had my fair share of phone mishaps, so I decided to give the extended warranty a shot. It turned out to be a lifesaver!"</div><br>
+                                        <div class="testimonial-author">Sunil Raj</div>
+                                    </div> <!-- end of text-wrapper -->
+                                </div> <!-- end of swiper-slide -->
+                                <!-- end of slide -->
+
+                                <!-- Slide -->
+                                <div class="swiper-slide">
+                                    <div class="image-wrapper">
+                                        <img class="img-fluid" src="{% static 'new/images/testimonial-4.jpg' %}" alt="alternative">
+                                    </div> <!-- end of image-wrapper -->
+                                    <div class="text-wrapper">
+                                        <div class="testimonial-text">"Investing in the 101 extended warranty was worth every penny. When my phone started acting up, I was dreading the repair costs. Thankfully, with the warranty.</div>
+                                        <div class="testimonial-author">Rebecca More</div>
+                                    </div> <!-- end of text-wrapper -->
+                                </div> <!-- end of swiper-slide -->
+                                <!-- end of slide -->
+
+                            </div> <!-- end of swiper-wrapper -->
+                            
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            <!-- end of add arrows -->
+
+                        </div> <!-- end of swiper-container -->
+                    </div> <!-- end of slider-container -->
+                    <!-- end of text slider -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of slider-2 -->
+    <!-- end of testimonials -->
+
+
+    <!-- Date -->
+    <div id="more" class="basic-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 ">
+                    <div class="card rounded-lg" style=" background-color: black;">
+                        <div class="card-body">
+                          <h5 class="card-title text-warning">Privacy Policy</h5>
+                          <p class="card-text">We are committed to safeguarding the privacy of our website visitors and service users.</p>
+                          <a class="btn-solid-lg page-scroll" href="privacy-policy.html">Privacy Policy</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 mx-auto">
+                        <div class="card rounded-lg" style=" background-color: black;">
+                            <div class="card-body">
+                              <h5 class="card-title text-warning">Terms Conditions</h5>
+                              <p class="card-text">These terms outline the rules and regulations for use of our website and services</p>
+                              <a class="btn-solid-lg page-scroll" href="terms-conditions.html">Terms Condition</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="card rounded-lg" style=" background-color: black;">
+                                <div class="card-body">
+                                  <h5 class="card-title text-warning">FAQs</h5>
+                                  <p class="card-text">Know more about 101 Extended Warranty or have any questions visti FAQs</p>
+                                  <a class="btn-solid-lg page-scroll" href="/faqs">Visit FAQs</a>
+                                </div>
+                              </div>
+                            </div>
+                    
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-5 -->
+    <!-- end of date -->
+
+
+    <!-- Newsletter -->
+    <div class="form-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Stay updated with news by subscribing to our newsletter and our social channels</h3>
+                        {% if subsuccess %}
+                            <h5 class="text-success mx-auto text-center">{{subsuccess}}</h5>
+                        {% endif %}
+                    <!-- Newsletter Form -->
+                    <form data-toggle="validator" data-focus="false" method="POST" action="/subscribe">
+                        <div class="form-group">
+                            <input type="email" class="form-control-input" id="nemail" required>
+                            <label class="label-control" for="nemail">Email</label>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group checkbox">
+                            <input type="checkbox" id="nterms" value="Agreed-to-Terms" required>I've read and agree to Corso's written <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms Conditions</a> 
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="form-control-submit-button">Subscribe</button>
+                        </div>
+                        <div class="form-message">
+                            <div id="nmsgSubmit" class="h3 text-center hidden"></div>
+                        </div>
+                    </form>
+                    <!-- end of newsletter form -->
+
+                    <!-- Social Links -->
+                    <div class="icon-container">
+                        <span class="fa-stack">
+                            <a href="https://www.facebook.com/profile.php?id=61550523818285">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="https://api.whatsapp.com/send?phone=919167301300&text=Hello%2C%20I%20want%20to%20Enquire%20About%20*101%20Extended%20Warranty*">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-whatsapp fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="https://www.instagram.com/zero_touchecosoft/">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="https://www.linkedin.com/company/zero-touch-ecosoft-pvt-ltd">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin-in fa-stack-1x"></i>
+                            </a>
+                        </span>
+                    </div> <!-- end of icon-container -->
+                    <!-- end of social icons -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of form-2 -->
+    <!-- end of newsletter -->
+
+
+    <!-- Contact -->
+    <div id="contact" class="form-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h2>Contact Details</h2>
+                        <p>For registration questions please get in touch using the contact details below. For any questions use the form.</p>
+                        <h3>Main Office Location</h3>
+                        <ul class="list-unstyled li-space-lg">
+                            <li class="media">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div class="media-body">Al Gadheer Palace, A-202, Shil Road, Thane, Maharashtra 400612, India</div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-mobile-alt"></i>
+                                <div class="media-body"><a href="tel:+916367676565">+916367676565</a>  (Sales)</div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-mobile-alt"></i>
+                                <div class="media-body"><a href="tel:+919967872862">+919967872862</a> (Support)</div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-envelope"></i>
+                                <div class="media-body"><a class="light-gray" href="mailto:support@e101warranty.com">support@e101warranty.com</a> </div>
+                            </li>
+                        </ul>
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+
+                    <!-- Contact Form -->
+                    <form data-toggle="validator" data-focus="false" method="POST" action="/call">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control-input" id="cname" name="cname" required>
+                            <label class="label-control" for="cname">Name</label>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control-input" id="cemail" name="cemail" required>
+                            <label class="label-control" for="cemail">Email</label>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control-input" id="cphone" name="cphone" required>
+                            <label class="label-control" for="cphone">Phone number</label>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control-textarea" id="cmsg" name="cmsg" required></textarea>
+                            <label class="label-control" for="cmsg">Your message</label>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group text-center">
+                            <label>
+                              <input type="radio" name="res" value="1">
+                              Sales
+                            </label>
+                            <label class="mx-5 text-center">
+                              <input type="radio" name="res" value="0" checked>
+                              Service
+                            </label>
+                          </div>
+                        <!-- <div class="form-group checkbox">
+                            <input type="checkbox" id="cterms" value="Agreed-to-Terms" required>I have read and agree to Corso's stated <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms Conditions</a> 
+                            <div class="help-block with-errors"></div>
+                        </div> -->
+                        <div class="form-group">
+                            <button type="submit" class="form-control-submit-button">SUBMIT</button>
+                        </div>
+                        <div class="form-message">
+                            <div id="cmsgSubmit" class="h3 text-center hidden"></div>
+                        </div>
+                    </form>
+                    <!-- end of contact form -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of form-3 -->
+    <!-- end of contact -->
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="footer-col first">
+                        <h5>About</h5>
+                        <p class="p-small">101 Extended Warranty is a specialized warranty service dedicated to providing comprehensive coverage for mobile devices.</p>
+                    </div>
+                </div> <!-- end of col -->
+                <div class="col-md-3">
+                    <div class="footer-col second">
+                        <h5>Pages</h5>
+                        <ul class="list-unstyled li-space-lg p-small">
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><a href="/terms">Terms & Conditions</a></div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><a href="/privacy">Privacy Policy</a></div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><a href="/faqs">FAQs</a></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div> <!-- end of col -->
+                <div class="col-md-3">
+                    <div class="footer-col third">
+                        <h5>Links</h5>
+                        <ul class="list-unstyled li-space-lg p-small">
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><a href="#claim">Claim/Track
+
+                                </a></div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><a href="#description">Details</a></div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body"><a href="#more">Subscribe</a></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div> <!-- end of col -->
+                <div class="col-md-3">
+                    <div class="footer-col fourth">
+                        <h5>Social Media</h5>
+                        <p class="p-small">For news & updates follow us</p>
+                        <a href="https://www.facebook.com/profile.php?id=61550523818285">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?phone=919167301300&text=Hello%2C%20I%20want%20to%20Enquire%20About%20*101%20Extended%20Warranty*">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.instagram.com/zero_touchecosoft/">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/zero-touch-ecosoft-pvt-ltd">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div> 
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of footer -->  
+    <!-- end of footer -->
+
+
+    <!-- Copyright -->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="p-small">Copyright © 2023 <a href="https://zerotouchecosoft.com">ZERO-TOUCH ECOSOFT PVT. LTD.</a> - All rights reserved</p>
+                </div> <!-- end of col -->
+            </div> <!-- enf of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of copyright --> 
+    <!-- end of copyright -->
+        
+   
+    
+    	
+    <!-- Scripts -->
+    <script src="{% static 'new/js/jquery.min.js' %}"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
+    <script src="{% static 'new/js/popper.min.js' %}"></script> <!-- Popper tooltip library for Bootstrap -->
+    <script src="{% static 'new/js/bootstrap.min.js' %}"></script> <!-- Bootstrap framework -->
+    <script src="{% static 'new/js/jquery.easing.min.js' %}"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
+    <script src="{% static 'new/js/jquery.countdown.min.js' %}"></script> <!-- The Final Countdown plugin for jQuery -->
+    <script src="{% static 'new/js/swiper.min.js' %}"></script> <!-- Swiper for image and text sliders -->
+    <script src="{% static 'new/js/jquery.magnific-popup.js' %}"></script> <!-- Magnific Popup for lightboxes -->
+    <script src="{% static 'new/js/validator.min.js' %}"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
+    <script src="{% static 'new/js/scripts.js' %}"></script> <!-- Custom scripts -->
+</body>
+</html>

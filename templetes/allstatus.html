@@ -1,0 +1,74 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me=title %}
+        <!-- main content start -->
+        <!-- graph start -->
+      {% if user.is_authenticated %}
+      
+        <!-- graph ends -->
+        <div class="container-fluid mx-auto mt-5" >
+          {% if today %}
+          <form action="/date_filter" method="GET">
+            {% csrf_token %}
+            <div class=" mb-2">
+              
+              <h2 class="">{{title}}</h2>
+              <label for="from">From</label>
+              <input type="date" id="from" name="from" value="{{ today|date:'Y-m-d' }}" max="{% now 'Y-m-d' %}">
+              <label for="to">To</label>
+              <input type="date" id="to" name="to" value="{{ last|date:'Y-m-d' }}" max="{% now 'Y-m-d' %}">
+              <input type="submit" class="text center" value="search">
+            </div>
+           
+          </form>
+          {% endif %}
+        <!-- dashborad start -->
+       
+         {% if total %}
+         <h2 class="text-center mb-4">Total&nbsp;{{total}}</h2>
+         {% endif %}
+          <div class="rounded-3 border border-dark p-2 mb-3" style="background-color: #CEDAFF;">
+            <div class=" table-responsive rounded-4 border border-dark bg-white p-1">
+              <table class="table table-striped mx-auto mw-100 display" data-order='[[ 1, "asc" ]]' id="table" style="min-width: max-content;">
+              <thead>
+                <tr>
+                    <th class="text-center">Lead Id</th>
+                    <th class="text-center">Status Date</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">AddedBy</th>
+                    <th class="text-center">Shop Name</th>
+                  
+                </tr>
+              </thead>
+      
+              {% if user.is_staff %}
+                
+              <tbody>
+                <!-- Replace the loop with actual data -->
+                {% for x in data %}
+                <tr>
+                    <th class="text-center">{{x.lead.order_id}}</th>
+                    <th class="text-center">{{x.statusDate}}</th>
+                    <th class="text-center">{{x.status}}</th>
+                    <th class="text-center">{{x.addedBy.first_name}}</th>
+                    <th class="text-center">{{x.lead.shop_name}}</th>
+                </tr>
+                {% endfor %}
+              </tbody>
+              {% endif %}
+            </table>
+            </div>
+          </div>
+      </div>
+      
+    </div>
+    {% else %}
+        <div class="text-center mt-5 text" >
+          <a href="/login" class="mt-5 anchor">
+              <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+          </a>  
+        </div>
+      {% endif %}
+    <!-- dashboard ends -->
+    {% include 'dashboard_footer.html' %}
+    

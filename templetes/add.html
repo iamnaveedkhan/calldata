@@ -1,0 +1,83 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me="Add User" %}
+        <!-- main content start -->
+        <!-- graph start -->
+  {% if user.is_authenticated %}
+  <h3 class="mt-3">New User</h3>
+  {% if errmsg %}
+  <div class="alert alert-danger">
+      {{errmsg}}
+  </div>
+  {% endif %}
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+<div class="col-md-4 text-center mx-auto mt-5">
+    <div class="mb-3" >
+        <label for="fname" class="form-label"><strong>First Name</strong></label>
+        <input type="text" class="form-control" name="fname" id="fname" placeholder="Enter First Name" required>
+    </div>
+    <div class="mb-3">
+      <label for="lname" class="form-label"><strong>Last Name</strong></label>
+      <input type="text" class="form-control" name="lname" id="lname" placeholder="Enter Last Name" required>
+  </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label"><strong>Email</strong></label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email" required>
+    </div>
+   
+    <div class="mb-3 ">
+        <label for="mob" class="form-label"><strong>Mobile Number</strong></label>
+        <input type="text" class="form-control" name="mob" id="mob" placeholder="Enter Mobile Number" required>
+    </div>
+    {% if request.user.role == 1 %}
+    <div class="mb-3 ">
+      <label for="manage" class="form-label"><strong>Select Position</strong></label>
+      <select name="manage" id="manage">
+        <option value="4">Sales Executive</option>
+          <option value="2">Manager</option>
+          <option value="3">Team Leader</option>
+      </select>
+    </div>
+    {% elif request.user.role == 2 %}
+    <div class="mb-3 ">
+      <label for="manage" class="form-label"><strong>Select Position</strong></label>
+      <select name="manage" id="manage">
+        <option value="4">Sales Executive</option>
+          <option value="3">Team Leader</option>
+      </select>
+  </div>
+    {% elif request.user.role == 3 %}
+    <div class="mb-3 ">
+      <label for="manage" class="form-label"><strong>Select Position</strong></label>
+      <select name="manage" id="manage">
+          <option value="4">Sales Executive</option>
+      </select>
+      </div>
+    {% endif %}
+    <div class="mb-3">
+        <input type="submit" class="btn btn-danger px-5 mt-3" value="Add">
+    </div>
+      {% if success %}
+          <div class="alert alert-success text-center mt-5">
+              {{success}}
+          </div>
+      {% endif %}
+  </div>
+
+  </form>
+</div>  
+
+</div>
+  {% else %}
+    <div class="text-center mt-5 text" >
+      <a href="/login" class="mt-5 anchor">
+          <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+      </a>  
+    </div>
+  {% endif %}
+<!-- dashboard ends -->
+{% include 'dashboard_footer.html' %}
+    

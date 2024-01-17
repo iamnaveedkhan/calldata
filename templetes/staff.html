@@ -1,0 +1,94 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me=title %}
+        <!-- main content start -->
+        <!-- graph start -->
+  {% if user.is_authenticated %}
+      
+        <!-- graph ends -->
+        {% if err %}
+        <div class="text-center text-danger mt-5 pt-5">
+          {{err}}
+        </div>
+        {% else %}
+        <!-- dashborad start -->
+        <div class="container mx-auto mt-3">
+          <h2 class="mb-3">{{title}}</h2>
+          <div class="rounded-3 border border-dark p-2 mb-3" style="background-color: #CEDAFF;">
+            <div class=" table-responsive rounded-4 border border-dark bg-white p-1">
+              <table class="table table-striped mx-auto mw-100 display" id="mytable" style="min-width: max-content;">
+              <thead>
+                <tr>
+                  <th class="text-center">First Name</th>
+                  <th class="text-center">Last Name</th>
+                  <th class="text-center">Mobile No</th>
+                  <th class="text-center">D.O.J</th>
+                  <th class="text-center">Manager / TL</th>
+                  <th class="text-center">Email</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+      
+              {% if user.is_staff %}
+                
+              <tbody>
+                <!-- Replace the loop with actual data -->
+                {% for x in data %}
+                <tr>
+                  <td class="text-center">{{x.first_name}}</td>
+                  <td class="text-center">{{x.last_name}}</td>
+                  <td class="text-center">{{x.mobile}}</td>
+                  <td class="text-center">{{x.date_joined}}</td>
+                  {% if x.manager.role == 1 %}
+                  <td class="text-center">{{x.manager.first_name}} &nbsp;(super)</td>
+                  {% elif x.manager.role == 2 %}
+                  <td class="text-center">{{x.manager.first_name}} &nbsp;(manager)</td>
+                  {% elif x.tl %}
+                  <td class="text-center">{{x.tl.first_name}}&nbsp;(TL)</td>
+                  {% endif %}
+                  <td class="card-text">{{x.email}}</td>
+                  
+                  <td class="text-center">
+                    <a
+                      href="http://127.0.0.1:8000/view_user/{{x.id}}"
+                      class="btn btn-primary viewedit"
+                    >
+                      View
+                    </a>
+                    <a
+                      href="http://127.0.0.1:8000/edit_user/{{x.id}}"
+                      class="btn btn-warning viewedit"
+                    >
+                      Edit
+                    </a>
+                   
+                    <a
+                      href="http://127.0.0.1:8000/viewlead/{{x.id}}"
+                      class="btn btn-success me-2 viewedit"
+                    >
+                    ViewLeads
+                    </a>
+                    
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              {% endif %}
+              
+            </table>
+            </div>
+          </div>
+      </div>
+      
+    </div>
+    {% endif %}
+    {% else %}
+        <div class="text-center mt-5 text" >
+          <a href="/login" class="mt-5 anchor">
+              <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+          </a>  
+        </div>
+      {% endif %}
+    <!-- dashboard ends -->
+    {% include 'dashboard_footer.html' %}
+    

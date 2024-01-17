@@ -1,0 +1,100 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me=title %}
+        <!-- main content start -->
+        <!-- graph start -->
+  {% if user.is_authenticated %}
+  {% for x in data %}
+  {% if x.role == 2 %}
+  <h3 class="mt-3">Edit Manager</h3>
+  {% elif x.role == 3 %}
+  <h3 class="mt-3">Edit TL</h3>
+  {% elif x.role == 4 %}
+  <h3 class="mt-3">Edit Sales Executive</h3>
+  {% endif %}
+  {% endfor %}
+  {% if errmsg %}
+  <div class="alert alert-danger">
+      {{errmsg}}
+  </div>
+  {% endif %}
+  <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+  <div class="col-md-4 mx-auto mt-5">
+      <div class="mb-3" style="width: 50%;">
+        {% for x in data %}
+          <label for="fname" class="form-label"><strong>First Name</strong></label>
+          <input type="text" class="form-control" name="fname" id="fname" placeholder="name@example.com" value="{{x.first_name}}">
+      </div>
+      <div class="mb-3" style="width: 50%;">
+        <label for="lname" class="form-label"><strong>Last Name</strong></label>
+        <input type="text" class="form-control" name="lname" id="lname" placeholder="name@example.com" value="{{x.last_name}}">
+    </div>
+
+      <div class="mb-3" style="width: 50%;">
+          <label for="email" class="form-label"><strong>Email</strong></label>
+          <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email" value="{{x.email}}">
+      </div>
+     
+      <div class="mb-3" style="width: 50%;">
+          <label for="mob" class="form-label"><strong>Mobile Number</strong></label>
+          <input type="text" class="form-control" name="mob" id="mob" placeholder="Confirm Password" value="{{x.mobile}}">
+      </div>
+      {% if request.user.role == 1 %}
+      <div class="mb-3" style="width: 50%;">
+          <label for="manage" class="form-label"><strong>Select Position</strong></label>
+          <select name="manage" id="manage">
+            {% if x.role == 2 %}
+                <option value="2">Manager</option>
+                <option value="3">TL</option>
+                <option value="4">Sales Executive</option>
+            {% elif x.role == 3 %}
+                <option value="3">TL</option>
+                <option value="2">Manager</option>
+                <option value="4">Sales Executive</option>
+            {% elif x.role == 4 %}
+              <option value="4">Sales Executive</option>
+              <option value="3">TL</option>
+              <option value="2">Manager</option>
+            {% endif %}
+          </select>
+      </div>
+      {% endif %}
+      
+      <div class="mb-3 mx-auto ms-4" >
+        <input type="submit" class="btn btn-success text-center px-5" value="Update">
+      </div> 
+          
+  </div>
+
+  </form>
+</div>  
+{% if request.user.role == 1 %}
+<div class="col-md-10">
+  <div class="mb-3 text-center" >
+    {% if x.role == 4 %}
+    <button class="btn btn-danger px-5 mt-3 "><a class="anchor text-white " href="/chng_tl/{{x.id}}">Change TL</a></button>
+    {% elif x.role == 3 %}
+  <button class="btn btn-danger px-4 mt-3 "><a class="anchor text-white " href="/chng_manager/{{x.id}}">Change Manager</a></button>
+    {% endif %}
+</div>
+{% endif %}
+  {% endfor %}
+
+  {% if success %}
+          <div class="alert alert-success text-center mt-5">
+              {{success}}
+          </div>
+      {% endif %}
+</div>
+  {% else %}
+    <div class="text-center mt-5 text" >
+      <a href="/login" class="mt-5 anchor">
+          <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+      </a>  
+    </div>
+  {% endif %}
+<!-- dashboard ends -->
+{% include 'dashboard_footer.html' %}
+    

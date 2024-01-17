@@ -1,0 +1,83 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me="Update Lead" %}
+        <!-- main content start -->
+        <!-- graph start -->
+      {% if user.is_authenticated %}
+<h3 class="mt-3">Update Lead</h3>
+            {% if err %}
+            <div class="alert alert-danger text-center">
+                {{err}}
+            </div>
+            {% endif %}
+
+            {% if success %}
+            <div class="alert alert-success text-center">
+                {{success}}
+            </div>
+            {% endif %}
+            
+        <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for x in data %}
+            <div class="row mx-3">
+
+                <div class=" mx-auto px-3 mt-5">
+                    <div class="mb-3 mx-5">
+                        <label for="name" class="form-label"><strong>Retailer Name</strong></label>
+                        <input type="text" class="form-control w-50" name="name" id="name" placeholder="Enter Name" required value="{{x.name}}">
+                    </div>  
+    
+                    <div class="mb-3 mx-5 no-spinners">
+                        <label for="d_no" class="form-label"><strong>Mobile Number</strong></label>
+                        <input type="number" class="form-control w-50" name="mob" id="d_no" placeholder="Enter Mobile No." required value="{{x.mob}}">
+                    </div>
+                    
+                
+                    <div class="mb-3 mx-5 no-spinners">
+                        <label for="alt" class="form-label"><strong>Alternate Number</strong></label>
+                        <input type="number" class="form-control w-50" name="alt" id="alt" placeholder="Enter Alternate No." value="{{x.alternate}}">
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="shop" class="form-label"><strong>Shop Name</strong></label>
+                        <input type="text" class="form-control w-50" name="shop" id="shop" placeholder="Enter Shop Name" required value="{{x.shop_name}}">
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="city" class="form-label"><strong>City</strong></label>
+                        <input type="text" class="form-control w-50" name="city" id="city" placeholder="Enter City Name" required value="{{x.city}}">
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="state" class="form-label"><strong>State</strong></label>
+                        <input type="text" class="form-control w-50" name="state" id="state" placeholder="Enter State Name" required value="{{x.state}}">
+                    </div>
+                    <div class="mb-3 mt-5 mx-5">
+                        <input type="submit" class="btn btn-danger w-25" value="Add">
+                    </div>
+                </div>
+                <div class="row">
+                    {% if x.status != 1 %}
+                    <div class="col-md-6 mb-3 mt-5 text-center">
+                        <a class="btn btn-danger" href="/no_interest/{{x.imei1}}">Not Interested</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+                
+            
+        </div>
+        
+        {% endfor %}
+        </form>
+    </div>  
+</div>
+
+    {% else %}
+        <div class="text-center mt-5 text" >
+          <a href="/login" class="mt-5 anchor">
+              <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+          </a>  
+        </div>
+      {% endif %}
+    <!-- dashboard ends -->
+    {% include 'dashboard_footer.html' %}

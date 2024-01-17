@@ -1,0 +1,51 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me="View" %}
+        <!-- main content start -->
+        <!-- graph start -->
+    {% if user.is_authenticated %}
+        {% if success %}
+        <h2 class="text-center mb-4 text-success">{{success}}</h2>
+        {% endif %}
+        {% for x in data %}
+        {% if x.status == 3 %}
+         <h2 class="text-center mb-4 text-success">Not Interested</h2>
+         {% endif %}
+        <div class="row mt-3">
+            <div class="col-md-5 mt-3 mx-3">
+                <p><strong>Shop Name:</strong>&nbsp;&nbsp;{{x.shop_name}}</p>
+                <p><strong>contact person:</strong>&nbsp;&nbsp;{{x.name}}</p>
+                <p><strong>Ref ID:</strong>&nbsp;&nbsp;{{x.order_id}}</p>
+                <p><strong>Added By:</strong>&nbsp;&nbsp;{{x.agent_id.username}}</p>
+                <p><strong>city:</strong>&nbsp;&nbsp;{{x.city}}</p>
+                <p><strong>state:</strong>&nbsp;&nbsp;{{x.state}}</p>
+                {% if user.role == 1 %}
+                <p><strong>Number:</strong>&nbsp;&nbsp;{{x.mob}}</p>
+                <p><strong>Alternate:</strong>&nbsp;&nbsp;{{x.alternate}}</p>
+                <p><strong>Status:</strong>&nbsp;&nbsp;{{x.statusDate}} "{{x.status}}" <a href="http://127.0.0.1:8000/allstatus/{{x.id}}">View All Status</a></p>
+                <p><strong>Comment:</strong>&nbsp;&nbsp;{{x.commentDate}} "{{x.comment}}" <a href="http://127.0.0.1:8000/allcomment/{{x.id}}">View All Comments</a></p>
+                
+            </div>
+            
+            <div class="mx-3 mt-5 pt-5 text-center">
+                
+                <a
+                  href="http://127.0.0.1:8000/edit/{{x.id}}"
+                  class="btn btn-danger viewedit px-5"
+                >
+                  Edit
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="text-center mt-5 text" >
+        <a href="/login" class="mt-5 anchor">
+            <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+        </a>  
+    </div>
+    {% endif %}
+</div>
+<!-- dashboard ends -->
+{% include 'dashboard_footer.html' %}

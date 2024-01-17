@@ -1,0 +1,69 @@
+{% load static %}
+
+{% include 'dashboard_header.html' with me=title %}
+        <!-- main content start -->
+        <!-- graph start -->
+      {% if user.is_authenticated %}
+      
+        <!-- graph ends -->
+          
+        <!-- dashborad start -->
+        <div class="container-fluid mx-auto mt-2" >
+          
+          
+         <!-- <input type="text" id="search-input" placeholder="Search..."> -->
+         {% if success %}
+         <h2 class="text-center mb-4">{{success}}</h2>
+         {% endif %}
+          <div class="rounded-3 border border-dark p-2 mb-3" style="background-color: #CEDAFF;">
+            <div class=" table-responsive rounded-4 border border-dark bg-white p-1">
+              <table class="table table-striped mx-auto mw-100 display" data-order='[[ 1, "asc" ]]' id="table" style="min-width: max-content;">
+              <thead>
+                <tr>
+                  <th class="text-center">Shop Name</th>
+                  <th class="text-center">Created On</th>
+                  <th class="text-center">City</th>
+                  <th class="text-center">State</th>
+                  <th class="text-center">Contact Person</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+      
+              {% if user.is_staff %}
+              <tbody>
+                <!-- Replace the loop with actual data -->
+                {% for x in data %}
+                <tr>
+                  <td class="text-center">{{x.shop_name}}</td>
+                  <td class="text-center">{{x.create_date}}</td>
+                  <td class="text-center">{{x.city}}</td>
+                  <td class="text-center">{{x.state}}</td>
+                  <td class="text-center">{{x.name}}</td>
+                  <td class="text-center">
+                    <a
+                      href="http://127.0.0.1:8000/select_lead/{{x.order_id}}"
+                      class="btn btn-success me-2 viewedit"
+                    >
+                    Pick
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              {% endif %}
+            </table>
+            
+            </div>
+          </div>
+      </div>
+    </div>
+    {% else %}
+        <div class="text-center mt-5 text" >
+          <a href="/login" class="mt-5 anchor">
+              <h2 class="font-bold" style="font-size: 62px; color: #2C3E50;">{{err}}</h2>
+          </a>  
+        </div>
+      {% endif %}
+    <!-- dashboard ends -->
+    {% include 'dashboard_footer.html' %}
+    

@@ -1,0 +1,40 @@
+{% load static %}
+<!-- footer start -->
+{% if user.is_authenticated %}
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- <script src="{% static '/js/bootstrap.min.js' %}"></script> -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $('#table').DataTable({
+            // searching: true  // This enables the search input box
+            ordering: false 
+        });
+    });
+</script>
+<script type="text/javascript">
+  $(document).ready( function () {
+      $('#mytable').DataTable({
+          // searching: true  // This enables the search input box
+          ordering: false 
+      });
+  });
+</script>
+<script>
+    function copyText(text) {
+      var tempInput = document.createElement("input");
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      alert("Link copied to clipboard!");
+    }
+</script>
+</div>
+  {% endif %}
+</body>
+</html>
