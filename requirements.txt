@@ -1,9 +1,13 @@
+MYSQLCLIENT_CFLAGS=-I/path/to/mysql/headers
+MYSQLCLIENT_LDFLAGS=-L/path/to/mysql/lib -lmysqlclient
+
 asgiref==3.7.2
 certifi==2023.11.17
 charset-normalizer==3.3.2
 Django==3.2
 idna==3.6
 mysql==0.0.3
+mysqlclient==1.4.6
 numpy==1.26.3
 pandas==2.1.4
 python-dateutil==2.8.2
