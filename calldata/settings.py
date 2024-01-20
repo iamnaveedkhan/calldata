@@ -91,10 +91,9 @@ DATABASES = {
 }
 
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
-del DATABASES['default']['OPTIONS']['sslmode'] 
-DATABASES['default']['OPTIONS']['ssl'] =  {'ca': os.environ.get('MYSQL_ATTR_SSL_CA')}
+
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
