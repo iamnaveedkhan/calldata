@@ -14,5 +14,6 @@ tzdata==2023.4
 urllib3==2.1.0
 dj-database-url==2.0.0
 PyMySQL==1.0.3
+python-dotenv==1.0.0
 
 
