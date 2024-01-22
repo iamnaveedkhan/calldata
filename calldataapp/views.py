@@ -629,8 +629,8 @@ def view(request, cid):
 
 
 def alllead1(request):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
@@ -645,8 +645,8 @@ def alllead1(request):
         return JsonResponse({'err': 'Please Login'}, status=400)
     
 def pick1(request):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
@@ -662,8 +662,8 @@ def pick1(request):
 
 
 def select1(request,id):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
@@ -681,8 +681,8 @@ def select1(request,id):
     
 
 def mob_user_login(request):
-    if not (datetime.time(1, 0) <= timezone.now().time() <= datetime.time(23, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(1, 0) <= timezone.now().time() <= datetime.time(23, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if request.method=='POST':
         uname=request.POST['uname']
         upass=request.POST['upass']
@@ -708,8 +708,8 @@ def csrf(request):
     
 
 def mobdash(request):
-    if not (datetime.time(1, 0) <= timezone.now().time() <= datetime.time(23, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(1, 0) <= timezone.now().time() <= datetime.time(23, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
@@ -734,8 +734,8 @@ def mobdash(request):
 
 
 def mobnewlead(request):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(hour=2)
@@ -763,8 +763,8 @@ def mobnewlead(request):
     
 
 def mobeditlead(request,cid):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
@@ -803,8 +803,8 @@ def mobeditlead(request,cid):
 
 
 def mobviewlead(request,cid):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
@@ -827,8 +827,8 @@ def mobviewlead(request,cid):
 
 
 def interested(request,id,lid):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
@@ -850,8 +850,8 @@ def interested(request,id,lid):
     
 
 def statusList(request,id):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
@@ -870,8 +870,8 @@ def statusList(request,id):
     
 
 def changePass(request):
-    if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
-        raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
+    # if not (datetime.time(10, 0) <= timezone.now().time() <= datetime.time(19, 0)):
+    #     raise PermissionDenied("Login is allowed only between 10 am and 7 pm.")
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(hour=2)
