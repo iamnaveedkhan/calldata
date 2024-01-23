@@ -317,6 +317,7 @@ def excel_lead(request):
                     context['errmsg'] = "Invalid file format. Please upload a CSV or Excel file."
                     return render(request, 'newlead.html', context)
                 for index, row in df.iterrows():
+                    if not Lead.objects.filter(Q(mob=row['cxMobile'])).exists():
                         
                         n = row['name']
                         d = row['cxMobile']
