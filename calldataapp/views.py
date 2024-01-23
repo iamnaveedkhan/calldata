@@ -328,7 +328,7 @@ def excel_lead(request):
                         lead_data = {
                             'name': n, 'mob': d,
                             'alternate': alt, 'order_id': "NK"+str(random.randrange(10000000, 99999999)),
-                            'shop_name': shop,'create_date':timezone.now,'comment':'CREATED','commentDate':timezone.now,'city':city,'state':state}
+                            'shop_name': shop,'create_date':timezone.now(),'comment':'CREATED','commentDate':timezone.now(),'city':city,'state':state}
                         l = Lead.objects.create(**lead_data)
                         l.save()
                 context = {'today': datetime.datetime.now().date(),'last': datetime.datetime.now().date(),'success': "Lead Created Successfully"}
