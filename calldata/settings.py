@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
-import dotenv
+from urllib.parse import quote_plus
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,31 +23,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-dotenv_file = os.path.join(BASE_DIR,".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-*r+x4u)uc)qu!s!tse&y@e&h+ns)8x^ubm)5-lk1w#q%sek1@j'
 
-DEVELOPMENT_MODE = True
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['localhost:8000','10.0.2.2','127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'calldataapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'calldataapp'
 ]
 
 MIDDLEWARE = [
@@ -80,13 +75,30 @@ TEMPLATES = [
 WSGI_APPLICATION = 'calldata.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+username = "naveed78603"
+password = "kashaf2016"
+cluster_name = "cluster0.n0bnczr.mongodb.net"    # Omit the port
+database = "nav"
+
+# Escape the username and password using quote_plus
+escaped_username = quote_plus(username)
+escaped_password = quote_plus(password)
+
+# Create the MongoDB Atlas connection string with SRV record (without specifying port)
+connection_string = f"mongodb+srv://{escaped_username}:{escaped_password}@{cluster_name}/{database}?retryWrites=true&w=majority"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'nav',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': connection_string,
+            'username': username,
+            'password': password,
+            'name': database,
+        }
     }
 }
 
