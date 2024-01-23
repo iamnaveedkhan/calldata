@@ -635,7 +635,7 @@ def alllead1(request):
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
         b.save()
         if request.method == 'GET':    
-            leads = list(Lead.objects.filter(Q(agent_id=request.COOKIES.get('userid')) & Q(status=1)).order_by('-id').values())
+            leads = list(Lead.objects.filter(agent_id=request.COOKIES.get('userid')).order_by('-id').values())
            
             return JsonResponse( leads, safe=False)
         else:
