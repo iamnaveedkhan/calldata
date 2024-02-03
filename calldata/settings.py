@@ -78,8 +78,8 @@ WSGI_APPLICATION = 'calldata.wsgi.application'
 
 username = "naveed78603"
 password = "kashaf2016"
-cluster_name = "cluster0.n0bnczr.mongodb.net"    # Omit the port
-database = "nav"
+cluster_name = "cluster0.pzjqmxn.mongodb.net"    # Omit the port
+database = "ztecall"
 
 # Escape the username and password using quote_plus
 escaped_username = quote_plus(username)
@@ -91,7 +91,7 @@ connection_string = f"mongodb+srv://{escaped_username}:{escaped_password}@{clust
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'nav',
+        'NAME': 'ztecall',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
             'host': connection_string,
