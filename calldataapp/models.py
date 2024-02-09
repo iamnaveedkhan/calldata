@@ -60,3 +60,10 @@ class Comment(models.Model):
     comment = models.CharField(max_length=500)
     addedBy = models.ForeignKey(User,on_delete=models.CASCADE,db_column="addedBy")
     lead = models.ForeignKey(Lead,on_delete=models.CASCADE,related_name='lead_data')
+
+class Call(models.Model):
+    callDate = models.DateTimeField(default=timezone.now)
+    duration = models.FloatField(blank=True,null=True)
+    addedBy = models.ForeignKey(User,on_delete=models.CASCADE,db_column="addedByCall")
+    lead = models.ForeignKey(Lead,on_delete=models.CASCADE,related_name='lead_dataCall')
+    number = models.BigIntegerField(blank=True,null=True)
