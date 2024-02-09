@@ -4,7 +4,7 @@ from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.db.models import Q
 from django.db import IntegrityError
-from calldataapp.models import Lead,User,Comment,Status
+from calldataapp.models import Lead,User,Comment,Status,Call
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from calldata import settings
@@ -635,7 +635,7 @@ def alllead1(request):
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
         b.save()
         if request.method == 'GET':    
-            leads = list(Lead.objects.filter(agent_id=request.COOKIES.get('userid')).order_by('-id').values())
+            leads = list(Lead.objects.filter(Q(agent_id=request.COOKIES.get('userid')) & Q(status=1)).order_by('-id').values())
            
             return JsonResponse( leads, safe=False)
         else:
@@ -750,7 +750,7 @@ def mobnewlead(request):
             comment = request.POST['comment']
             l = Lead.objects.create(agent_id=a,name= name, city= city,mob= mob,
                     alternate= alt,order_id= "OZO"+str(random.randrange(10000000, 99999999)),state= state,
-                     shop_name=shop,comment=comment,create_date=timezone.now,commentDate=timezone.now,)
+                     shop_name=shop,comment=comment,create_date=timezone.now(),commentDate=timezone.now(),)
             l.save()
             Comment.objects.create(addedBy=a,comment=comment,lead=l)
             return JsonResponse({'status':True
@@ -892,7 +892,7 @@ def changePass(request):
             return JsonResponse({'err': 'Please Login'}, status=400)    
     else:
         return JsonResponse({'err': 'Please Login'}, status=400)
-
+    
 
 def checking(request):
     try:
@@ -907,20 +907,35 @@ def checking(request):
                 d=request.POST['duration']
                 e=request.POST['date']
                 timestamp_in_seconds = float(e) / 1000.0
-                formatted_date = datetime.datetime.utcfromtimestamp(timestamp_in_seconds).strftime('%Y-%m-%d %H:%M:%S')
+                formatted_date = datetime.datetime.utcfromtimestamp(timestamp_in_seconds).replace(tzinfo=timezone.utc)
                 print(a,b,c,d,formatted_date)
-                # leaddata = Lead.objects.get(mob=int(a))
-                # u=User.objects.get(id=request.COOKIES.get('userid'))
-                # if leaddata:
-                #     print(f"Mobile Number = {a}")
-                #     print(f"Call Duration {b} Seconds")
-                #     Call.objects.create(duration=d,addedBy=u,lead=leaddata,number=a,callDate=formatted_date)
-                return JsonResponse({'status':True,'number':a}, status=200)
-                # else:
-                #     return JsonResponse({'err': 'Please Loginz'}, status=400)
+                leaddata = Lead.objects.get(mob=int(a))
+                u=User.objects.get(id=request.COOKIES.get('userid'))
+                if leaddata:
+                    print(f"Mobile Number = {a}")
+                    print(f"Call Duration {b} Seconds")
+                    Call.objects.create(duration=d,addedBy=u,lead=leaddata,number=a,callDate=formatted_date)
+                    return JsonResponse({'status':True}, status=200)
+                else:
+                    print(f"lead not found, personal call!!!! {a}")
+                    return JsonResponse({'err': 'Please Loginz'}, status=400)
             else:
                 return JsonResponse({'err': 'Please Login'}, status=400)    
         else:
             return JsonResponse({'err': 'Please Login'}, status=400)
     except Exception as e:
         print(e)
+        return JsonResponse({'status':True}, status=200)
+
+
+def mob_user_logout(request):
+    if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
+        b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
+        if request.method == 'GET':
+            b.delete()
+            return JsonResponse({'status':True
+                                }, status=200)
+        else:
+            return JsonResponse({'err': 'Please Login'}, status=400)
+    else:
+            return JsonResponse({'err': 'Please Login'}, status=400)
