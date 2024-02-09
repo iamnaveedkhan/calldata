@@ -7,7 +7,6 @@ urlpatterns = [
     path('login',views.user_login),
     path('logout',views.user_logout),
     path('dash',views.dashboard),
-    path('',views.dashboard),
     path('newlead',views.newlead),
     path('edit/<cid>',views.edit),
     path('add',views.add_user),
@@ -41,6 +40,7 @@ urlpatterns = [
     path('changepass1',views.changePass),
     path('interested/<id>/<lid>',views.interested),
     path('statuslist/<id>',views.statusList),
+    path('mob_user_logout',views.mob_user_logout),
     path('checking/',views.checking),
 
 ]
