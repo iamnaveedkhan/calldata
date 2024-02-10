@@ -8,6 +8,10 @@
         {
             "src": "/(.*)",
             "dest": "calldata/wsgi.py"
+        },
+        {
+            "src": "/staticfiles/(.*)",
+            "dest": "/static/$1"
         }
     ]
 }
