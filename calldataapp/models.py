@@ -24,8 +24,6 @@ class User(AbstractUser):
     nameInBank = models.CharField(max_length=200,blank=True, null=True)
     accountNumber = models.BigIntegerField(blank=True, null=True)
     imei = models.BigIntegerField(blank=True, null=True)
-    userImage = models.ImageField(upload_to='image',blank=True, null=True)
-    docImage = models.ImageField(upload_to='image',blank=True, null=True)
     email = models.EmailField(unique=True)
 
     def __str__(self):
