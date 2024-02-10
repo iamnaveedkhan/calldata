@@ -13,8 +13,7 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['manager', 'tl', 'email', 'role', 'mobile', 'address', 'city', 'state',
-                'bankName', 'ifsc', 'nameInBank', 'accountNumber', 'imei', 'userImage',
-                'docImage','first_name','last_name',]
+                'bankName', 'ifsc', 'nameInBank', 'accountNumber', 'imei','first_name','last_name',]
         exclude = ['manager','tl']
     error_messages = {
         'email': {
@@ -23,16 +22,16 @@ class UserForm(forms.ModelForm):
         },
     }
 
-    def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
-        if not self.instance.userImage:
-            self.fields['userImage'].required = True
-        if not self.instance.docImage:
-            self.fields['docImage'].required = True
-        if self.instance and self.instance.userImage is None:
-            del self.fields['userImage']
-        if self.instance and self.instance.docImage is None:
-            del self.fields['docImage']
+    # def __init__(self, *args, **kwargs):
+    #     super(UserForm, self).__init__(*args, **kwargs)
+    #     if not self.instance.userImage:
+    #         self.fields['userImage'].required = True
+    #     if not self.instance.docImage:
+    #         self.fields['docImage'].required = True
+    #     if self.instance and self.instance.userImage is None:
+    #         del self.fields['userImage']
+    #     if self.instance and self.instance.docImage is None:
+    #         del self.fields['docImage']
 
     def clean(self):
         cleaned_data = super().clean()
