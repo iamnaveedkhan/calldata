@@ -507,8 +507,31 @@ def all_manager(request):
     role = request.user.role if auth_check else None
 
     if auth_check and role == 1:
-        context['data'] = User.objects.filter(role=2).order_by('-id')
-        context['title'] = "All Managers"
+        users = User.objects.filter(role=2).order_by('-id')
+        counts = {}
+
+        for user in users:
+            created = Lead.objects.filter(agent_id=user.id).count()
+            interested = Lead.objects.filter(Q(status=2) & Q(agent_id=user.id)).count()
+            notinterested = Lead.objects.filter(Q(status=3) & Q(agent_id=user.id)).count()
+            followup = Lead.objects.filter(Q(status=4) & Q(agent_id=user.id)).count()
+            completed = Lead.objects.filter(Q(status=5) & Q(agent_id=user.id)).count()
+            noncall = Lead.objects.filter(Q(status=1) & Q(agent_id=user.id)).count()
+
+            # Store counts in the dictionary
+            counts[user.id] = {
+                'created': created,
+                'interested': interested,
+                'notinterested': notinterested,
+                'followup': followup,
+                'completed': completed,
+                'noncall': noncall,
+            }
+        context = {
+            'counts':counts,
+            'data': users,
+            'title': "All Managers"
+        }
         return render(request, 'staff.html', context)
     elif auth_check:
         return redirect('/dash')
