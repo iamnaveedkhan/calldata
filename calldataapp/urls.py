@@ -49,6 +49,7 @@ urlpatterns = [
     path('interested/<id>/<lid>',views.interested),
     path('statuslist/<id>',views.statusList),
     path('mob_user_logout',views.mob_user_logout),
+    path('checking/',views.checking),
 
 ]
 
