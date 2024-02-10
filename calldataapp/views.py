@@ -1166,3 +1166,38 @@ def mob_user_logout(request):
             return JsonResponse({'err': 'Please Login'}, status=400)
     else:
             return JsonResponse({'err': 'Please Login'}, status=400)
+
+
+
+def checking(request):
+    try:
+        if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
+            b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
+            b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(hour=2)
+            b.save()
+            if request.method == 'POST':
+                a=request.POST['number']
+                b=request.POST['name']
+                c=request.POST['type']
+                d=request.POST['duration']
+                e=request.POST['date']
+                timestamp_in_seconds = float(e) / 1000.0
+                formatted_date = datetime.datetime.utcfromtimestamp(timestamp_in_seconds).replace(tzinfo=timezone.utc)
+                print(a,b,c,d,formatted_date)
+                leaddata = Lead.objects.get(mob=int(a))
+                u=User.objects.get(id=request.COOKIES.get('userid'))
+                if leaddata:
+                    print(f"Mobile Number = {a}")
+                    print(f"Call Duration {b} Seconds")
+                    Call.objects.create(duration=d,addedBy=u,lead=leaddata,number=a,callDate=formatted_date)
+                    return JsonResponse({'status':True}, status=200)
+                else:
+                    print(f"lead not found, personal call!!!! {a}")
+                    return JsonResponse({'err': 'Please Loginz'}, status=400)
+            else:
+                return JsonResponse({'err': 'Please Login'}, status=400)    
+        else:
+            return JsonResponse({'err': 'Please Login'}, status=400)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'status':True}, status=200)
