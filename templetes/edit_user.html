@@ -4,63 +4,171 @@
         <!-- main content start -->
         <!-- graph start -->
   {% if user.is_authenticated %}
-  {% for x in data %}
-  {% if x.role == 2 %}
+  {% if form.instance.role == 2 %}
   <h3 class="mt-3">Edit Manager</h3>
-  {% elif x.role == 3 %}
+  {% elif form.instance.role == 3 %}
   <h3 class="mt-3">Edit TL</h3>
-  {% elif x.role == 4 %}
+  {% elif form.instance.role == 4 %}
   <h3 class="mt-3">Edit Sales Executive</h3>
   {% endif %}
-  {% endfor %}
   {% if errmsg %}
   <div class="alert alert-danger">
       {{errmsg}}
   </div>
   {% endif %}
+  {% if success %}
+  <div class="alert alert-success text-center w-50 mx-auto">
+      {{success}}
+  </div>
+{% endif %}
   <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="row">
-  <div class="col-md-4 mx-auto mt-5">
-      <div class="mb-3" style="width: 50%;">
-        {% for x in data %}
-          <label for="fname" class="form-label"><strong>First Name</strong></label>
-          <input type="text" class="form-control" name="fname" id="fname" placeholder="name@example.com" value="{{x.first_name}}">
-      </div>
-      <div class="mb-3" style="width: 50%;">
-        <label for="lname" class="form-label"><strong>Last Name</strong></label>
-        <input type="text" class="form-control" name="lname" id="lname" placeholder="name@example.com" value="{{x.last_name}}">
-    </div>
+      {% if form.errors %}
+  <div class="alert alert-danger">
+    <strong>Error:</strong> Please correct the following issues.
+    <ul>
+      {% for field, error_list in form.errors.items %}
+        {% if field != 'password1' and field != 'password2' %}
+          {% for error in error_list %}
+            <li>{{ field }}: {{ error }}</li>
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+        <div class="row mx-5">
+          <div class="col-md-4 text-center px-3">
+            <div class="mb-3">
+              <label for="first_name" class="form-label"><strong>First Name</strong></label>
+              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Enter First Name" value="{% if form.instance.first_name %}{{form.instance.first_name}}{% endif %}" required >
+            </div>
+            <div class="mb-3">
+              <label for="last_name" class="form-label"><strong>Last Name</strong></label>
+              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Enter Last Name" value="{% if form.instance.last_name %}{{form.instance.last_name}}{% endif %}" required>
+            </div>
+      
+            <div class="mb-3">
+              <label for="email" class="form-label"><strong>Email</strong></label>
+              <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email" value="{% if form.instance.email %}{{form.instance.email}}{% endif %}" required>
+            </div>
+      
+            <div class="mb-3 ">
+              <label for="mobile" class="form-label"><strong>Mobile Number</strong></label>
+              <input type="number" class="form-control" name="mobile" id="mobile" placeholder="Enter Mobile Number" value="{% if form.instance.mobile %}{{form.instance.mobile}}{% endif %}" required>
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label"><strong>Complete Address</strong></label>
+              <input type="text" class="form-control" name="address" id="address" placeholder="Enter Complete Address" value="{% if form.instance.address %}{{form.instance.address}}{% endif %}" required>
+            </div>
+            <div class="mb-3">
+              <label for="state" class="form-label"><strong>State</strong></label>
+              <input type="text" class="form-control" name="state" id="state" placeholder="Enter State" value="{% if form.instance.state %}{{form.instance.state}}{% endif %}" required>
+            </div>
+            <div class="mb-3">
+              <label for="city" class="form-label"><strong>City</strong></label>
+              <input type="text" class="form-control" name="city" id="city" placeholder="Enter City" value="{% if form.instance.city %}{{form.instance.city}}{% endif %}" required>
+            </div>
+          </div>
+          <div class="col-md-4 text-center mx-auto mx-3">
+            <div class="mb-3">
+              <label for="bankName" class="form-label"><strong>Bank Name</strong></label>
+              <input type="text" class="form-control" name="bankName" id="bankName" placeholder="Enter Bank Name" value="{% if form.instance.bankName %}{{form.instance.bankName}}{% endif %}" required>
+            </div>
+            <div class="mb-3">
+              <label for="accountNumber" class="form-label"><strong>A/C Number</strong></label>
+              <input type="number" class="form-control" name="accountNumber" id="accountNumber" placeholder="Enter Account Number" value="{% if form.instance.accountNumber %}{{form.instance.accountNumber}}{% endif %}" required>
+            </div>
+            <div class="mb-3">
+              <label for="ifsc" class="form-label"><strong>IFSC Code</strong></label>
+              <input type="text" class="form-control" name="ifsc" id="ifsc" placeholder="Enter IFSC Code" value="{% if form.instance.ifsc %}{{form.instance.ifsc}}{% endif %}" required>
+            </div>
+            <div class="mb-3">
+              <label for="nameInBank" class="form-label"><strong>Name In Bank</strong></label>
+              <input type="text" class="form-control" name="nameInBank" id="nameInbank" placeholder="Enter Name In Bank"
+                value="{% if form.instance.address %}{{form.instance.nameInBank}}{% endif %}" required>
+            </div>
+            <div class="mb-3">
+              <label for="imei" class="form-label"><strong>IMEI No.</strong></label>
+              <input type="number" class="form-control" name="imei" id="imei" placeholder="Enter IMEI Number" value="{% if form.instance.imei %}{{form.instance.imei}}{% endif %}" required>
+            </div>
+            <div class="mb-3">
 
-      <div class="mb-3" style="width: 50%;">
-          <label for="email" class="form-label"><strong>Email</strong></label>
-          <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email" value="{{x.email}}">
-      </div>
-     
-      <div class="mb-3" style="width: 50%;">
-          <label for="mob" class="form-label"><strong>Mobile Number</strong></label>
-          <input type="text" class="form-control" name="mob" id="mob" placeholder="Confirm Password" value="{{x.mobile}}">
-      </div>
-      {% if request.user.role == 1 %}
-      <div class="mb-3" style="width: 50%;">
-          <label for="manage" class="form-label"><strong>Select Position</strong></label>
-          <select name="manage" id="manage">
-            {% if x.role == 2 %}
-                <option value="2">Manager</option>
-                <option value="3">TL</option>
-                <option value="4">Sales Executive</option>
-            {% elif x.role == 3 %}
-                <option value="3">TL</option>
-                <option value="2">Manager</option>
-                <option value="4">Sales Executive</option>
-            {% elif x.role == 4 %}
-              <option value="4">Sales Executive</option>
-              <option value="3">TL</option>
-              <option value="2">Manager</option>
+              <label for="userImage" class="form-label d-flex justify-content-between"><strong>User Image</strong>{% if form.instance.userImage and form.instance.docImage %}<strong><a href="{{form.instance.userImage.url}}" target="_blank" style="text-decoration: none;">Existing Image</a></strong>{% endif %}</label>
+              <input type="file" class="form-control" name="userImage" id="userImage" placeholder="Upload User's Image">
+            </div>
+            <div class="mb-3">
+              <label for="docImage" class="form-label d-flex justify-content-between"><strong>Documents Image</strong>{% if form.instance.userImage and form.instance.docImage %}<strong><a href="{{form.instance.docImage.url}}" target="_blank" style="text-decoration: none;">Existing Image</a></strong>{% endif %}</label>
+              <input type="file" class="form-control" name="docImage" id="docImage" placeholder="Upload User's document">
+            </div>
+            
+          </div>
+      
+          <div class="mb-3 text-center mt-3">
+      
+            {% if form.instance.role %}
+      
+                  {% if form.instance.role == 2 %}
+                  <div class="mb-3 ">
+                    <label for="role" class="form-label"><strong>Select Position</strong></label>
+                    <select name="role" id="role">
+                  <option value="2">Manager</option>
+                  <option value="4">Sales Executive</option>
+                  <option value="3">Team Leader</option>
+                </select>
+              </div>
+                  {% elif form.instance.role == 3 %}
+                  <div class="mb-3 ">
+                    <label for="role" class="form-label"><strong>Select Position</strong></label>
+                    <select name="role" id="role">
+                  <option value="3">Team Leader</option>
+                  <option value="2">Manager</option>
+                  <option value="4">Sales Executive</option>
+                </select>
+              </div>
+                  {% elif form.instance.role == 4 %}
+                  <div class="mb-3 ">
+                    <label for="role" class="form-label"><strong>Select Position</strong></label>
+                    <select name="role" id="role">
+                  <option value="4">Sales Executive</option>
+                  <option value="2">Manager</option>
+                  <option value="3">Team Leader</option>
+                </select>
+              </div>
+                  {% endif %}
+      
+      
+            {% else %}
+      
+      
+                  {% if request.user.role == 1 %}
+                  <div class="mb-3 ">
+                    <label for="role" class="form-label"><strong>Select Position</strong></label>
+                    <select name="role" id="role">
+                      <option value="4">Sales Executive</option>
+                      <option value="2">Manager</option>
+                      <option value="3">Team Leader</option>
+                    </select>
+                  </div>
+                  {% elif request.user.role == 2 %}
+                  <div class="mb-3 ">
+                    <label for="role" class="form-label"><strong>Select Position</strong></label>
+                    <select name="role" id="role">
+                      <option value="4">Sales Executive</option>
+                      <option value="3">Team Leader</option>
+                    </select>
+                  </div>
+                  {% elif request.user.role == 3 %}
+                  <div class="mb-3 ">
+                    <label for="role" class="form-label"><strong>Select Position</strong></label>
+                    <select name="role" id="role">
+                      <option value="4">Sales Executive</option>
+                    </select>
+                  </div>
+                  {% endif %}
+      
+      
             {% endif %}
-          </select>
-      </div>
-      {% endif %}
       
       <div class="mb-3 mx-auto ms-4" >
         <input type="submit" class="btn btn-success text-center px-5" value="Update">
@@ -80,13 +188,8 @@
     {% endif %}
 </div>
 {% endif %}
-  {% endfor %}
 
-  {% if success %}
-          <div class="alert alert-success text-center mt-5">
-              {{success}}
-          </div>
-      {% endif %}
+ 
 </div>
   {% else %}
     <div class="text-center mt-5 text" >

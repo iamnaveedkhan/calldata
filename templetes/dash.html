@@ -8,10 +8,10 @@
         <div class="col-md-12 h-75">
         <div class="row text-justify mt-5 mx-auto">
           <div class="col-md-3">
-            <div class="col-md-2 card text-bg-primary w-100 custom1">
+            <div class="col-md-2 card w-100 custom1">
             <div class="card-body shadow-lg">
               <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-8 text-white">
               <h6 class="card-title">TODAY</h6>
               <h3 class="card-text">{{today}}</h3>
               {% if today > 1 %}
@@ -19,22 +19,22 @@
               {% else %}
               <h6 class="card-text">Customer</h6>
               {% endif %}
-              {% if request.user.role == 1 %}
+              <!-- {% if request.user.role == 1 %}
               <h6 class="card-text"><i class="bi bi-currency-rupee"></i>{{amt_today}}</h6>
-              {% endif %}
+              {% endif %} -->
               </div>
               <div class="col-md-4">
-                <img src="../static/image/dashboard/dash_today.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="...">
+                <!-- <img src="../static/image/dashboard/dash_today.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="..."> -->
               </div>
             </div>
             </div>
           </div>
         </div>
         <div class="col-md-3 h-75">
-          <div class="col-md-2 card text-bg-primary w-100 custom2" >
+          <div class="col-md-2 card w-100 custom2" >
             <div class="card-body shadow-lg">
               <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-8 text-white">
               <h6 class="card-title">THIS WEEK</h6>
               <h3 class="card-text">{{week}}</h3>
               {% if week > 1 %}
@@ -42,22 +42,22 @@
               {% else %}
               <h6 class="card-text">Customer</h6>
               {% endif %}
-              {% if request.user.role == 1 %}
+              <!-- {% if request.user.role == 1 %}
               <h6 class="card-text"><i class="bi bi-currency-rupee"></i>{{amt_week}}</h6>
-              {% endif %}
+              {% endif %} -->
             </div>
             <div class="col-md-4">
-              <img src="../static/image/dashboard/dash_week.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="...">
+              <!-- <img src="../static/image/dashboard/dash_week.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="..."> -->
             </div>
           </div>
             </div>
           </div>
         </div>
         <div class="col-md-3 h-75">
-          <div class="col-md-2 card text-bg-primary w-100 custom3">
+          <div class="col-md-2 card w-100 custom3">
             <div class="card-body shadow-lg">
               <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-8 text-white">
               <h6 class="card-title">THIS MONTH</h6>
               <h3 class="card-text">{{month}}</h3>
               {% if month > 1 %}
@@ -65,22 +65,22 @@
               {% else %}
               <h6 class="card-text">Customer</h6>
               {% endif %}
-              {% if request.user.role == 1 %}
+              <!-- {% if request.user.role == 1 %}
               <h6 class="card-text"><i class="bi bi-currency-rupee"></i>{{amt_month}}</h6>
-              {% endif %}
+              {% endif %} -->
             </div>
             <div class="col-md-4">
-              <img src="../static/image/dashboard/dash_month.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="...">
+              <!-- <img src="../static/image/dashboard/dash_month.png" class="card-img-top pt-4 img-fluid d-none d-sm-block" alt="..."> -->
             </div>
           </div>
             </div>
           </div>
         </div>
         <div class="col-md-3 h-75">
-          <div class="col-md-2 card text-bg-primary w-100 custom4"  >
+          <div class="col-md-2 card w-100 custom4"  >
             <div class="card-body shadow-lg">
               <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-8 text-white">
               <h6 class="card-title">ALL TIME</h6>
               <h3 class="card-text">{{all}}</h3>
               {% if all > 1 %}
@@ -88,12 +88,12 @@
               {% else %}
               <h6 class="card-text">Customer</h6>
               {% endif %}
-              {% if request.user.role == 1 %}
+              <!-- {% if request.user.role == 1 %}
               <h6 class="card-text"><i class="bi bi-currency-rupee"></i>{{amt_all}}</h6>
-              {% endif %}
+              {% endif %} -->
             </div>
             <div class="col-md-4">
-              <img src="../static/image/dashboard/dash_all.png" class="card-img-top pt-4 img-fluid d-none d-sm-block"  alt="...">
+              <!-- <img src="../static/image/dashboard/dash_all.png" class="card-img-top pt-4 img-fluid d-none d-sm-block"  alt="..."> -->
             </div>
           </div>
             </div>
@@ -102,7 +102,7 @@
         </div>
       </div>
     </div>
-    <div class="row container-fluid">
+    <!-- <div class="row container-fluid">
       
         <canvas class="col-md-4 mt-3 mx-3" id="myChart" style="width:100%;max-width:600px"></canvas>
         <canvas class="col-md-4 mt-3 mx-3" id="myChart1" style="width:100%;max-width:600px"></canvas>
@@ -151,7 +151,7 @@
           }
         }
       });
-        </script>
+        </script> -->
         <!-- graph ends -->
 
         <!-- dashborad start -->
@@ -163,9 +163,8 @@
          <h2 class="text-center mb-4 text-danger">{{err}}</h2>
          {% endif %}
           <h2 class="">Dashboard</h2>
-          <div class="rounded-3 border border-dark p-2 mb-3" style="background-color: #CEDAFF;">
-            <div class=" table-responsive rounded-4 border border-dark bg-white p-1">
-              <table class="table table-striped mx-auto mw-100 container-fluid" style="min-width: max-content;">
+          <div class="table-responsive rounded-3 border border-light p-2 mb-3 bg-light">
+              <table class="table mx-auto table-light mw-100 container-fluid h-100" style="min-width: max-content;">
               <thead>
                 <tr>
                   <th class="text-center">Ref Id</th>
@@ -176,6 +175,7 @@
                   <th class="text-center">Shop Name</th>
                   <th class="text-center">City</th>
                   <th class="text-center">State</th>
+                  <th class="text-center">Status</th>
                   <th class="text-center">Actions</th>
                 </tr>
               </thead>
@@ -186,11 +186,7 @@
                 <!-- Replace the loop with actual data -->
                 {% for x in data %}
                 <tr>
-                  {% if x.status == 1 %}
-                    <td class="text-center">{{x.order_id}}</td>
-                  {% else %}
-                    <td class="text-center text-danger">Not Interested</td>
-                  {% endif %}
+                  <td class="text-center">{{x.order_id}}</td>
                   <td class="text-center">{{x.name}}</td>
                   <td class="text-center">{{x.mob}}</td>
                   <td class="text-center">{{x.create_date}}</td>
@@ -198,15 +194,28 @@
                   <td class="text-center">{{x.shop_name}}</td>
                   <td class="text-center">{{x.city}}</td>
                   <td class="text-center">{{x.state}}</td>
+                  {% if x.status == 1 %}
+                  <td class="text-center">Created</td>
+                  {% elif x.status == 2 %}
+                  <td class="text-center">Interested</td>
+                  {% elif x.status == 3 %}
+                  <td class="text-center">Not Interested</td>
+                  {% elif x.status == 4 %}
+                  <td class="text-center">CallBack</td>
+                  {% elif x.status == 5 %}
+                  <td class="text-center">Completed</td>
+                  {% else %}
+                  <td class="text-center">Not Define</td>
+                  {% endif %}
                   <td class="text-center">
                     <a
-                      href="http://127.0.0.1:8000/view/{{x.id}}"
+                      href="https://ztecrm.com/view/{{x.id}}"
                       class="btn btn-primary viewedit"
                     >
                       View
                     </a>
                     <a
-                      href="http://127.0.0.1:8000/edit/{{x.id}}"
+                      href="https://ztecrm.com/edit/{{x.id}}"
                       class="btn btn-warning viewedit"
                     >
                       Edit
@@ -217,8 +226,7 @@
               </tbody>
               {% endif %}
             </table>
-            </div>
-          </div>
+        </div>
       </div>
     </div>
     {% else %}

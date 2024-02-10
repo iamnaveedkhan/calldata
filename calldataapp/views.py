@@ -4,11 +4,11 @@ from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.db.models import Q
 from django.db import IntegrityError
-from calldataapp.models import Lead,User,Comment,Status,Call
+from calldataapp.models import Lead,User,Comment,Status
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from calldata import settings
-from calldataapp.forms import filter
+from calldataapp.forms import filter,UserForm
 # from django.contrib.staticfiles import finders
 from django.http import JsonResponse
 import pandas as pd
@@ -17,6 +17,13 @@ from django.contrib.sessions.models import Session
 from django.middleware.csrf import get_token
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied
+import csv
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import A4,letter,landscape,A3
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, PageTemplate, Frame
+from reportlab.lib.units import inch
+from reportlab.pdfgen import canvas
 
 # Create your views here.
 def user_login(request):
@@ -34,8 +41,13 @@ def user_login(request):
                 u=authenticate(username=uname,password=upass)
                 if u is not None:
                     if uname==upass:
-                        context['errmsgs']="Click Here TO Reset Your Password"
-                        return render(request,'login.html',context)
+                        # context['errmsgs']="Click Here TO Reset Your Password"
+                        # return render(request,'login.html',context)
+                        t=random.randrange(100000,21474836)
+                        n=User.objects.get(username=uname)
+                        n.temp=t
+                        n.save()
+                        return redirect("/forget/"+str(t))
                     else:
                         login(request,u)
                         n=User.objects.filter(username=uname)
@@ -148,47 +160,35 @@ def resetp(request):
 def add_user(request):
     context = {}
     auth_check = request.user.is_authenticated and request.user.is_active
+    
     if auth_check and request.user.role in [1, 2, 3]:
         a = request.user.id
+
         if request.method == 'POST':
-            fname = request.POST['fname']
-            lname = request.POST['lname']
-            email = request.POST['email']
-            mob = request.POST['mob']
-            manage = request.POST['manage']
-            t = random.randrange(100000,21474836)
-            if len(str(mob)) != 10:
-                context['errmsg'] = "Contact Number Must Be 10 Digit"
-                return render(request, 'edit_user.html', context)
-            try:
-                if request.user.role in [1, 2, 3]:
-                    user_data = {
-                        'first_name': fname,
-                        'last_name': lname,
-                        'mobile': mob,
-                        'email': email,
-                        'password': make_password(email),
-                        'username': email,
-                        'temp':t,}
-                    if request.user.role == 3:
-                        user_data['tl_id'] = a
-                        user_data['manager_id'] = request.user.manager_id
-                    elif request.user.role in [1, 2]:
-                        user_data['manager_id'] = a
-                    user_data['role'] = manage
-                    u = User.objects.create(**user_data)
-                    u.save()
-                    context['success'] = f"User {fname} is registered successfully"
-                    return render(request, 'add.html', context)
-            except IntegrityError as e:
-                error_message = "A user with this email ID already exists. Please choose a different email ID."
-                return render(request, 'edit_user.html', {'errmsg': error_message})
+            form = UserForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.instance.temp = random.randrange(100000, 21474836)
+                
+                if request.user.role in [1, 2]:
+                    form.instance.manager = request.user
+                
+                if request.user.role == 3:
+                    form.instance.tl = request.user
+                
+                form.instance.username = form.cleaned_data["email"]
+                form.instance.password = make_password(form.cleaned_data["email"])
+                form.save()
+                
+                context['success'] = f"User {form.instance.first_name} is registered successfully"
+                return render(request, 'add.html', context)
+            else:
+                context['form'] = form
+                return render(request, 'add.html', context)
         else:
-            return render(request, 'add.html')
+            context['form'] = UserForm()
+            return render(request, 'add.html', context)
     else:
         return redirect('/dash')
-    context['err'] = "Please Login"
-    return render(request, 'login.html', context)
 
 
 
@@ -196,44 +196,26 @@ def add_user(request):
 def edit_user(request, uid):
     context = {}
     auth_check = request.user.is_authenticated and request.user.is_active
+    
     if auth_check and request.user.role in [1, 2, 3]:
-        if request.method == 'GET':
-            role_actions = {
-                1: User.objects.filter(id=uid),
-                2: User.objects.filter(Q(id=uid) & (Q(role=3) | Q(role=4))),
-                3: User.objects.filter(Q(id=uid) & Q(role=4))}
-            user_data = role_actions.get(request.user.role, (None, None))
-            if user_data:
-                context['data'] = user_data
-                context['title'] = "Edit User"
-                return render(request, 'edit_user.html', context)
-            else:
-                return redirect('/dash')
-        elif request.method == 'POST':
-            fname = request.POST['fname']
-            lname = request.POST['lname']
-            email = request.POST['email']
-            mob = request.POST['mob']
-            if len(str(mob)) != 10:
-                context['errmsg'] = "Contact Number Must Be 10 Digit"
-                return render(request, 'edit_user.html', context)
-            else:
-                try:
-                    if request.user.role == 1:
-                        manage = request.POST['manage']
-                        User.objects.filter(id=uid).update(first_name=fname, last_name=lname, mobile=mob, email=email, role=manage)
-                    else:
-                        User.objects.filter(id=uid).update(first_name=fname, last_name=lname, mobile=mob, email=email)
+        a = User.objects.get(id=uid)
 
-                    context['success'] = f"User {fname} is updated successfully"
-                    return render(request, 'edit_user.html', context)
-                except IntegrityError as e:
-                    error_message = "A user with this email ID already exists. Please choose a different email ID."
-                    return render(request, 'edit_user.html', {'errmsg': error_message})
+        if request.method == 'POST':
+            form = UserForm(request.POST, request.FILES, instance=a)
+            if form.is_valid():
+                form.save()
+                context['success'] = f"User {form.instance.first_name} is Updated successfully"
+                context['form'] = form
+                return render(request, 'edit_user.html', context)
+            else:
+                print(form.errors)
+                context['form'] = form
+                return render(request, 'edit_user.html', context)
+        else:
+            context['form'] = UserForm(instance=a)
+            return render(request, 'edit_user.html', context)
     else:
         return redirect('/dash')
-    context['err'] = "Please Login"
-    return render(request, 'login.html', context)
 
 # Create Or Edit User Detaile (End).....................................................................................
 
@@ -244,6 +226,11 @@ def dashboard(request):
     context = {}
     auth_check = request.user.is_authenticated and request.user.is_active
     if auth_check and request.method == 'GET':
+        role_actions = {
+            1: lambda: filter().super(request),
+            2: lambda: filter().manage(request),
+            3: lambda: filter().tl(request),
+            4: lambda: filter().staf(request),}
         role_filters = {
             1: Q(),
             2: Q(Q(manager_id=request.user.id) | Q(agent_id=request.user.id)) & Q(status=1),
@@ -253,8 +240,10 @@ def dashboard(request):
         context['data'] = leads
         context['success']=request.session.get('msg')
         context['err']=request.session.get('errmsg')
-        request.session.pop('msg', None)
-        request.session.pop('errmsg', None)
+        if request.user.role in role_actions:
+            context.update(role_actions[request.user.role]())
+            request.session.pop('msg', None)
+            request.session.pop('errmsg', None)
         return render(request, 'dash.html', context)
     else:
         context['err'] = "Please Login" if not auth_check else "Invalid Request"
@@ -288,7 +277,7 @@ def newlead(request):
                 lead_data = {
                     'name': name,  'mob': mob,
                     'alternate': alt, 'order_id': "NK"+str(random.randrange(10000000, 99999999)),
-                     'shop_name': shop,'city':city,'state':state,'create_date':timezone.now(),'comment':'CREATED','commentDate':timezone.now(),}
+                     'shop_name': shop,'city':city,'state':state,'create_date':timezone.now(),'comment':'CREATED','commentDate':timezone.now(),'picked_date':timezone.now()}
                 lead_data.update(role_filters.get(request.user.role, {}))
                 l = Lead.objects.create(**lead_data)
                 l.save()
@@ -317,6 +306,7 @@ def excel_lead(request):
                     context['errmsg'] = "Invalid file format. Please upload a CSV or Excel file."
                     return render(request, 'newlead.html', context)
                 for index, row in df.iterrows():
+                    if not Lead.objects.filter(Q(mob=row['cxMobile'])).exists():
                         
                         n = row['name']
                         d = row['cxMobile']
@@ -341,49 +331,50 @@ def excel_lead(request):
         context['err'] = "Please Login"
         return render(request, 'login.html', context)
 
-def select_lead(request,cid):
-    context={}
-    auth_check = request.user.is_authenticated and request.user.is_active
-    if auth_check:
-        if request.method == 'GET':
-            a = Lead.objects.get(order_id=cid)
-            if a.agent_id is None:
-                context = {'today': datetime.datetime.now().date(),'last': datetime.datetime.now().date(),'success': "Lead Created Successfully"}
-                role_filters = {
-                    1: {'agent_id': request.user,'manager_id': request.user.id},
-                    2: {'agent_id': request.user,'manager_id': request.user.id},
-                    3: {'tl_id': request.user.id,'agent_id': request.user},
-                    4: {'agent_id': request.user,'manager_id': request.user.manager_id,'tl_id': request.user.tl_id}
-                }
-                lead_data = {
-                    'name': a.name, 'mob': a.mob,
-                    'alternate': a.alternate, 'order_id': a.order_id,
-                    'city': a.city, 'state': a.state,
-                     'shop_name': a.shop_name,'picked_date':datetime.datetime.now().date()}
-                lead_data.update(role_filters.get(request.user.role, {}))
-                l = Lead.objects.filter(order_id=cid).update(**lead_data)
-                request.session['msg'] = "Lead Added"
-                return redirect(f'/view/{a.id}')
-            else:
-                request.session['msg'] = "Lead Not Available Or Picked"
-                return redirect('/dash')
-        else:
-            a=Lead.objects.filter(agent_id=None)
-            return render(request,'select_lead.html',{'data':a})
-    else:
-        context['err'] = "Please Login"
-        return render(request, 'login.html', context)
+# def select_lead(request,cid):
+#     context={}
+#     auth_check = request.user.is_authenticated and request.user.is_active
+#     if auth_check:
+#         if request.method == 'GET':
+#             a = Lead.objects.get(order_id=cid)
+#             if a.agent_id is None:
+#                 context = {'today': datetime.datetime.now().date(),'last': datetime.datetime.now().date(),'success': "Lead Created Successfully"}
+#                 role_filters = {
+#                     1: {'agent_id': request.user,'manager_id': request.user.id},
+#                     2: {'agent_id': request.user,'manager_id': request.user.id},
+#                     3: {'tl_id': request.user.id,'agent_id': request.user},
+#                     4: {'agent_id': request.user,'manager_id': request.user.manager_id,'tl_id': request.user.tl_id}
+#                 }
+#                 lead_data = {
+#                     'name': a.name, 'mob': a.mob,
+#                     'alternate': a.alternate, 'order_id': a.order_id,
+#                     'city': a.city, 'state': a.state,
+#                      'shop_name': a.shop_name,'picked_date':datetime.datetime.now().date()}
+#                 lead_data.update(role_filters.get(request.user.role, {}))
+#                 l = Lead.objects.filter(order_id=cid).update(**lead_data)
+#                 request.session['msg'] = "Lead Added"
+#                 return redirect(f'/view/{a.id}')
+#             else:
+#                 request.session['msg'] = "Lead Not Available Or Picked"
+#                 return redirect('/dash')
+#         else:
+#             a=Lead.objects.filter(agent_id=None)
+#             return render(request,'select_lead.html',{'data':a})
+#     else:
+#         context['err'] = "Please Login"
+#         return render(request, 'login.html', context)
 
-def pick(request):
-    context={}
-    auth_check = request.user.is_authenticated and request.user.is_active
-    if auth_check and request.method == 'GET':
-        a = Lead.objects.filter(agent_id=None).order_by('-id')
-        context['data']=a
-        return render(request,'select_lead.html',context)
-    else:
-        context['err'] = "Please Login"
-        return render(request, 'login.html', context)
+# def pick(request):
+#     context={}
+#     auth_check = request.user.is_authenticated and request.user.is_active
+#     if auth_check and request.method == 'GET':
+#         a = Lead.objects.filter(agent_id=None).order_by('-id')
+#         context['data']=a
+#         context['title']='Pick Lead'
+#         return render(request,'select_lead.html',context)
+#     else:
+#         context['err'] = "Please Login"
+#         return render(request, 'login.html', context)
 # edit Details (Exept Images) Of Existing Lead
 def edit(request, cid):
     context = {}
@@ -453,14 +444,14 @@ def all_lead(request):
         return render(request, 'login.html', {'err': err})
     role_filters = {
         1: Q(create_date=datetime.datetime.now().date()),
-        2: (Q(manager_id=request.user.id) | Q(agent_id=request.user)) & Q(date=datetime.datetime.now().date()),
-        3: (Q(agent_id=request.user) | Q(tl_id=request.user.id)) & Q(date=datetime.datetime.now().date()),
-        4: Q(agent_id=request.user) & Q(date=datetime.datetime.now().date()),}
+        2: (Q(manager_id=request.user.id) | Q(agent_id=request.user)) & Q(picked_date=datetime.datetime.now().date()),
+        3: (Q(agent_id=request.user) | Q(tl_id=request.user.id)) & Q(picked_date=datetime.datetime.now().date()),
+        4: Q(agent_id=request.user) & Q(picked_date=datetime.datetime.now().date()),}
     query = role_filters.get(request.user.role, None)
     if query is None:
         return redirect('/dash')
     context = {'today': datetime.datetime.now(),'last': datetime.datetime.now(),'title': "All Leads",}
-    context['data'] = Lead.objects.filter(query).order_by('-id')
+    context['data'] = Lead.objects.filter(query).order_by('-picked_date')
     return render(request, 'dashboard.html', context)
 
 
@@ -475,8 +466,30 @@ def all_staff(request):
         2: Q(manager_id=request.user.id, role=4),
         3: Q(tl_id=request.user.id, role=4),
     }
+    users = User.objects.filter(queries.get(role, Q()))
+    counts = {}
+
+    for user in users:
+        created = Lead.objects.filter(agent_id=user.id).count()
+        interested = Lead.objects.filter(Q(status=2) & Q(agent_id=user.id)).count()
+        notinterested = Lead.objects.filter(Q(status=3) & Q(agent_id=user.id)).count()
+        followup = Lead.objects.filter(Q(status=4) & Q(agent_id=user.id)).count()
+        completed = Lead.objects.filter(Q(status=5) & Q(agent_id=user.id)).count()
+        noncall = Lead.objects.filter(Q(status=1) & Q(agent_id=user.id)).count()
+
+        # Store counts in the dictionary
+        counts[user.id] = {
+            'created': created,
+            'interested': interested,
+            'notinterested': notinterested,
+            'followup': followup,
+            'completed': completed,
+            'noncall': noncall,
+        }
+    print(counts)
     context = {
-        'data': User.objects.filter(queries.get(role, Q())),
+        'counts':counts,
+        'data': users,
         'title': "All Sales Executive" if auth_check else None,
     }
     if auth_check and role in [1,2,3] and not context['data']:
@@ -486,6 +499,85 @@ def all_staff(request):
     if not auth_check:
         context['err'] = "Please Login"
     return render(request, 'staff.html' if auth_check else 'login.html', context)
+
+
+def all_manager(request):
+    context = {}
+    auth_check = request.user.is_authenticated and request.user.is_active
+    role = request.user.role if auth_check else None
+
+    if auth_check and role == 1:
+        context['data'] = User.objects.filter(role=2).order_by('-id')
+        context['title'] = "All Managers"
+        return render(request, 'staff.html', context)
+    elif auth_check:
+        return redirect('/dash')
+    else:
+        context['err'] = "Please Login"
+        return render(request, 'login.html', context)
+
+
+def all_tl(request):
+    context = {}
+    auth_check = request.user.is_authenticated and request.user.is_active
+    role = request.user.role if auth_check else None
+    queries = {1: Q(role=3),2: Q(manager_id=request.user.id, role=3),}
+    if auth_check and role in [1,2]:
+        context = {'data': User.objects.filter(queries.get(role, Q())).order_by('-id'),
+                'title': "All TL(s)" if auth_check and role in [1, 2] else None,}
+        return render(request, 'staff.html',context)
+    elif auth_check:
+        return redirect('/dash')
+    else:
+        context['err'] = "Please Login"
+        return render(request, 'login.html', context)
+    
+
+def transfer_tl(request,uid):
+    context={}
+    if request.user.is_authenticated and request.user.is_active:
+        if request.user.role==1:
+            a=User.objects.filter(Q(id=uid) & Q(role=4))
+            b=User.objects.filter(role=3)
+            context['data']=a
+            context['tl_data']=b
+            if request.method=='GET':
+                return render(request,'transfer_tl.html',context)
+            else:
+                tl=request.POST['tl']
+                a=User.objects.get(id=uid)
+                a.tl_id=tl
+                a.save()
+                context['success']=("TL Successfully Changed to "+"  "+a.tl.first_name)
+                return render(request,'transfer_tl.html',context)
+        else:
+            return redirect('/dash')
+    else:
+        context['err']="Please Login"
+        return render(request,'login.html',context)
+
+def transfer_manager(request,uid):
+    context={}
+    if request.user.is_authenticated and request.user.is_active:
+        if request.user.role==1:
+            a=User.objects.filter(Q(id=uid) & Q(role=3))
+            b=User.objects.filter(role=2)
+            context['data']=a
+            context['m_data']=b
+            if request.method=='GET':
+                return render(request,'transfer_manager.html',context)
+            else:
+                manager=request.POST['manager']
+                a=User.objects.get(id=uid)
+                a.manager_id=manager
+                a.save()
+                context['success']=("manager Successfully Changed to "+"  "+a.manager.first_name)
+                return render(request,'transfer_manager.html',context)
+        else:
+            return redirect('/dash')
+    else:
+        context['err']="Please Login"
+        return render(request,'login.html',context)
 
 
 
@@ -499,10 +591,11 @@ def search(request):
             2: Q(manager_id=request.user.id) | Q(agent_id=request.user.id),
             3: Q(tl_id=request.user.id) | Q(agent_id=request.user.id),
             4: Q(agent_id=request.user.id),}
-        query = (Q(mob__icontains=srch) | Q(imei1__icontains=srch) | Q(order_id__icontains=srch) | Q(name__icontains=srch) | Q(email__icontains=srch) | Q(alternate__icontains=srch) | Q(plan__icontains=srch)) & role_filters.get(request.user.role, Q())
+        query = (Q(mob__icontains=srch) | Q(city__icontains=srch) | Q(order_id__icontains=srch) | Q(name__icontains=srch) | Q(state__icontains=srch) | Q(alternate__icontains=srch) | Q(shop_name__icontains=srch)) & role_filters.get(request.user.role, Q())
         data = Lead.objects.filter(query)
         today=datetime.datetime.now().date()
-        return render(request, 'dashboard.html',{'data':data})
+        context ={'data':data,'title':"Search",'cid':srch,'today':today,'last':today}
+        return render(request, 'dashboard.html',context)
     else:
         context['err'] = "Please Login" if not auth_check else None
         return render(request, 'login.html', context)
@@ -541,7 +634,7 @@ def viewlead(request,cid):
         1: Q(manager_id=cid) | Q(agent_id=cid) | Q(tl_id=cid),
         2: Q(manager_id=cid) | Q(agent_id=cid),
         3: Q(agent_id=cid) | Q(tl_id=cid)}
-    context = {'today': datetime.datetime.now().date(),'last': datetime.datetime.now().date() - relativedelta(days=30),'title': "All Leads",}
+    context = {'today': datetime.datetime.now().date(),'last': datetime.datetime.now().date() - relativedelta(days=30),'title': "View Leads",'cid':cid}
     query = role_filters.get(request.user.role, None)
     if query is None:
         return redirect('/dash')
@@ -554,8 +647,28 @@ def view_user(request, mid):
     context = {}
     auth_check = request.user.is_authenticated and request.user.is_active
     if auth_check and request.method == 'GET' and request.user.role in [1]:
-        a = User.objects.filter(Q(manager_id=mid) | Q(tl_id=mid)).order_by('-id')
-        context = {'data': a,'title': "View Details",'err': "You are Not Authorised" if not a else None}
+        users = User.objects.filter(Q(manager_id=mid) | Q(tl_id=mid)).order_by('-id')
+
+        # Initialize a dictionary to store counts for each user
+        counts = {}
+
+        for user in users:
+            created = Lead.objects.filter(Q(status=1) & Q(agent_id=user.id)).count()
+            interested = Lead.objects.filter(Q(status=2) & Q(agent_id=user.id)).count()
+            notinterested = Lead.objects.filter(Q(status=3) & Q(agent_id=user.id)).count()
+            followup = Lead.objects.filter(Q(status=4) & Q(agent_id=user.id)).count()
+            completed = Lead.objects.filter(Q(status=5) & Q(queagent_id=user.idry)).count()
+
+            # Store counts in the dictionary
+            counts[user.id] = {
+                'created': created,
+                'interested': interested,
+                'notinterested': notinterested,
+                'followup': followup,
+                'completed': completed,
+            }
+        print(counts)
+        context = {'counts': counts,'data': users,'title': "View Details",'err': "No Data Found" if not users else None}
         return render(request, 'staff.html', context)
     elif auth_check:
         return redirect('/dash')
@@ -623,6 +736,143 @@ def view(request, cid):
     
 
 
+def generate_csv(request,first,last):
+    context={}
+    auth_check = request.user.is_authenticated and request.user.is_active
+    if auth_check and request.method == 'GET':
+        role_filters = {
+            1: Q(),
+            2: Q(manager_id=request.user.id) | Q(agent_id=request.user.id),
+            3: Q(tl_id=request.user.id) | Q(agent_id=request.user.id),
+            4: Q(agent_id=request.user.id),
+        }
+        if last == '2':
+            query = Q(agent_id=first) & role_filters.get(request.user.role, Q())
+        elif last == '3':
+            query = (Q(mob__icontains=first) | Q(city__icontains=first) | Q(order_id__icontains=first) | Q(name__icontains=first) | Q(state__icontains=first) | Q(alternate__icontains=first) | Q(shop_name__icontains=first)) & role_filters.get(request.user.role, Q())
+        else:
+            query = Q(create_date__range=(first, last)) & role_filters.get(request.user.role, Q())
+        data = Lead.objects.filter(query).order_by('-id')
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=data.csv'
+        csv_writer = csv.writer(response)
+
+        headers = ['ORDER ID', 'NAME', 'DATE', 'STATUS DATE', 'E-MAIL', 'MOBILE', 'STATE', 'CITY', 'STATUS']
+        csv_writer.writerow(headers)
+        for lead in data:
+            if lead.status == 1:
+                status = "Created"
+            elif lead.status == 2:
+                status = "Interested"
+            elif lead.status == 3:
+                status = "Not Interested"
+            elif lead.status == 4:
+                status = "FollowUp"
+            elif lead.status == 5:
+                status = "Completed"
+            row_data = [lead.order_id,lead.name,lead.create_date,lead.statusDate,
+                lead.email,lead.mob,lead.state,lead.city,status,]
+            csv_writer.writerow(row_data)
+
+        return response
+    else:
+        context['err'] = "Please Login"
+        return render(request, 'login.html', context)
+    
+
+
+def generate_pdf(request,first,last):
+    context={}
+    auth_check = request.user.is_authenticated and request.user.is_active
+    if auth_check and request.method == 'GET':
+        role_filters = {
+            1: Q(),
+            2: Q(manager_id=request.user.id) | Q(agent_id=request.user.id),
+            3: Q(tl_id=request.user.id) | Q(agent_id=request.user.id),
+            4: Q(agent_id=request.user.id),
+        }
+        if last == '2':
+            query = Q(agent_id=first) & role_filters.get(request.user.role, Q())
+        elif last == '3':
+            query = (Q(mob__icontains=first) | Q(city__icontains=first) | Q(order_id__icontains=first) | Q(name__icontains=first) | Q(state__icontains=first) | Q(alternate__icontains=first) | Q(shop_name__icontains=first)) & role_filters.get(request.user.role, Q())
+        else:
+            query = Q(create_date__range=(first, last)) & role_filters.get(request.user.role, Q())
+        data = Lead.objects.filter(query).order_by('-id')
+        dynamic_data = [[' Sr.No ',' ORDER ID ',' NAME ',' DATE ',' SHOP NAME ',' CITY ',' STATE ',' MOBILE ','STATUS']]  # Header row
+        n = 0
+        for lead in data:
+            n = n + 1
+            if lead.status == 1:
+                status = "Created"
+            elif lead.status == 2:
+                status = "Interested"
+            elif lead.status == 3:
+                status = "Not Interested"
+            elif lead.status == 4:
+                status = "FollowUp"
+            elif lead.status == 5:
+                status = "Completed"
+            dynamic_data.append([
+                f" {str(n)} ",
+                f" {str(lead.order_id)} ",
+                f" {str(lead.name)} ",
+                f" {str(lead.create_date)} ",
+                f" {str(lead.shop_name)} ",
+                f" {str(lead.city)} ",
+                f" {str(lead.state)} ",
+                f" {str(lead.mob)} ",
+                f" {status} "
+            ])
+
+        max_widths = [max(map(len, col)) * 6 for col in zip(*dynamic_data)]
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+        document = SimpleDocTemplate(response, pagesize=(sum(max_widths) + 20, A4[1]))
+        table = Table(dynamic_data, colWidths=max_widths, splitByRow=1)
+
+        style = TableStyle([
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.black),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+            ('TOPPADDING', (0, 0), (-1, -1), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ])
+
+        table.setStyle(style)
+        document.build([table])
+        return response
+    else:
+        context['err'] = "Please Login"
+        return render(request, 'login.html', context)
+    
+def userlead(request,cid,pid):
+    if not (request.user.is_authenticated and request.user.is_active and request.user.role == 1):
+        err = "Please Login"
+        return render(request, 'login.html', {'err': err})
+    # role_filters = {
+    #     1: Q(status=cid) & Q(agent_id=pid),
+        # 2: (Q(manager_id=request.user.id) | Q(agent_id=request.user)) & Q(status=cid),
+        # 3: (Q(agent_id=request.user) | Q(tl_id=request.user.id)) & Q(status=cid),
+        # 4: Q(agent_id=request.user) & Q(status=cid),}
+    # query = role_filters.get(request.user.role, None)
+    # if query is None:
+    #     return redirect('/dash')
+    context = {'today': datetime.datetime.now(),'last': datetime.datetime.now(),'title': "User's Leads",}
+    context['data'] = Lead.objects.filter(Q(status=cid) & Q(agent_id=pid)).order_by('-picked_date')
+    return render(request, 'dashboard.html', context)
+    
+
+
+
+
+
+
 
 
 
@@ -635,7 +885,7 @@ def alllead1(request):
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
         b.save()
         if request.method == 'GET':    
-            leads = list(Lead.objects.filter(Q(agent_id=request.COOKIES.get('userid')) & Q(status=1)).order_by('-id').values())
+            leads = list(Lead.objects.filter(Q(agent_id=request.COOKIES.get('userid'))).order_by('-id').values())
            
             return JsonResponse( leads, safe=False)
         else:
@@ -651,7 +901,18 @@ def pick1(request):
         b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(minutes=10)
         b.save()
         if request.method == 'GET':
-            leads = list(Lead.objects.filter(agent_id=None).values())
+            a = User.objects.get(id=request.COOKIES.get('userid'))
+            if Lead.objects.filter(Q(agent_id=a) & Q(status=1)).count() == 0:
+                lead = Lead.objects.filter((Q(state__icontains="bjibdji") | Q(city__icontains="thane")) & Q(agent_id=None))[:10]
+                if lead.count() < 10:
+                    new_lead_count = 10 - lead.count()
+                    additional_leads = Lead.objects.filter(agent_id=None)[:new_lead_count]
+                    lead = lead.union(additional_leads)
+                for x in lead:
+                    x.agent_id = a
+                    x.save()
+                    print(x.agent_id)
+            leads = list(Lead.objects.filter(Q(agent_id=a) & Q(status=1)).values())
             return JsonResponse( leads, safe=False)
         else:
             return JsonResponse({'err': 'Please Login'}, status=400)
@@ -893,41 +1154,7 @@ def changePass(request):
     else:
         return JsonResponse({'err': 'Please Login'}, status=400)
     
-
-def checking(request):
-    try:
-        if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
-            b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))
-            b.expire_date = datetime.datetime.now(pytz.utc) + relativedelta(hour=2)
-            b.save()
-            if request.method == 'POST':
-                a=request.POST['number']
-                b=request.POST['name']
-                c=request.POST['type']
-                d=request.POST['duration']
-                e=request.POST['date']
-                timestamp_in_seconds = float(e) / 1000.0
-                formatted_date = datetime.datetime.utcfromtimestamp(timestamp_in_seconds).replace(tzinfo=timezone.utc)
-                print(a,b,c,d,formatted_date)
-                leaddata = Lead.objects.get(mob=int(a))
-                u=User.objects.get(id=request.COOKIES.get('userid'))
-                if leaddata:
-                    print(f"Mobile Number = {a}")
-                    print(f"Call Duration {b} Seconds")
-                    Call.objects.create(duration=d,addedBy=u,lead=leaddata,number=a,callDate=formatted_date)
-                    return JsonResponse({'status':True}, status=200)
-                else:
-                    print(f"lead not found, personal call!!!! {a}")
-                    return JsonResponse({'err': 'Please Loginz'}, status=400)
-            else:
-                return JsonResponse({'err': 'Please Login'}, status=400)    
-        else:
-            return JsonResponse({'err': 'Please Login'}, status=400)
-    except Exception as e:
-        print(e)
-        return JsonResponse({'status':True}, status=200)
-
-
+    
 def mob_user_logout(request):
     if Session.objects.filter(session_key=request.COOKIES.get('sessionId')):
         b= Session.objects.get(session_key=request.COOKIES.get('sessionId'))

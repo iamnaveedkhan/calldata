@@ -16,6 +16,17 @@ class User(AbstractUser):
     temp = models.BigIntegerField(blank=True,null=True)
     role=models.IntegerField(verbose_name='Role',choices=cat,default=0)
     mobile=models.BigIntegerField(blank=True, null=True)
+    address = models.CharField(max_length=500,blank=True, null=True,)
+    city = models.CharField(max_length=200,blank=True, null=True)
+    state = models.CharField(max_length=200,blank=True, null=True)
+    bankName = models.CharField(max_length=200,blank=True, null=True)
+    ifsc = models.CharField(max_length=20,blank=True, null=True)
+    nameInBank = models.CharField(max_length=200,blank=True, null=True)
+    accountNumber = models.BigIntegerField(blank=True, null=True)
+    imei = models.BigIntegerField(blank=True, null=True)
+    userImage = models.ImageField(upload_to='image',blank=True, null=True)
+    docImage = models.ImageField(upload_to='image',blank=True, null=True)
+    email = models.EmailField(unique=True)
 
     def __str__(self):
         return self.username
@@ -38,6 +49,9 @@ class Lead(models.Model):
     picked_date=models.DateField(blank=True,null=True)
     comment = models.CharField(max_length=500,blank=True,null=True)
     commentDate = models.DateTimeField(default=timezone.now)
+    email = models.CharField(max_length=200,blank=True,null=True)
+    address = models.CharField(max_length=1000,blank=True,null=True)
+    gstNo = models.CharField(max_length=50,blank=True,null=True)
     def __str__(self):
         return self.name
     
@@ -60,10 +74,3 @@ class Comment(models.Model):
     comment = models.CharField(max_length=500)
     addedBy = models.ForeignKey(User,on_delete=models.CASCADE,db_column="addedBy")
     lead = models.ForeignKey(Lead,on_delete=models.CASCADE,related_name='lead_data')
-
-class Call(models.Model):
-    callDate = models.DateTimeField(default=timezone.now)
-    duration = models.FloatField(blank=True,null=True)
-    addedBy = models.ForeignKey(User,on_delete=models.CASCADE,db_column="addedByCall")
-    lead = models.ForeignKey(Lead,on_delete=models.CASCADE,related_name='lead_dataCall')
-    number = models.BigIntegerField(blank=True,null=True)

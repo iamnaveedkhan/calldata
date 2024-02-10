@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('',views.dashboard),
     path('login',views.user_login),
     path('logout',views.user_logout),
     path('dash',views.dashboard),
@@ -15,18 +16,25 @@ urlpatterns = [
     path('forget/<tid>',views.forget),
     path('all_lead',views.all_lead),
     path('all_staff',views.all_staff),
+    path('all_manager',views.all_manager),
+    path('all_tl',views.all_tl),
+    path('chng_tl/<uid>',views.transfer_tl),
+    path('chng_manager/<uid>',views.transfer_manager),
     path('viewlead/<cid>',views.viewlead),
     path('view_user/<mid>',views.view_user),
     path('edit_user/<uid>',views.edit_user),
     path('excel_lead',views.excel_lead),
-    path('select_lead/<cid>',views.select_lead),
+    # path('select_lead/<cid>',views.select_lead),
     path('search',views.search),
     path('date_filter',views.date_filter),
     path('allcomment/<id>',views.allcomment),
     path('allstatus/<id>',views.allstatus),
+    path('csv/<first>/<last>',views.generate_csv),
+    path('pdf/<first>/<last>',views.generate_pdf),
+    path('userlead/<cid>/<pid>',views.userlead),
     # path('all_manager',views.all_manager),
     path('view/<cid>',views.view),
-    path('picklead',views.pick),
+    # path('picklead',views.pick),
     path('no_interest/<cid>',views.no_interest),
     path('picklead1',views.pick1),
     path('selectlead1/<id>',views.select1),
@@ -41,7 +49,6 @@ urlpatterns = [
     path('interested/<id>/<lid>',views.interested),
     path('statuslist/<id>',views.statusList),
     path('mob_user_logout',views.mob_user_logout),
-    path('checking/',views.checking),
 
 ]
 

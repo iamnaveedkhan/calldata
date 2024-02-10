@@ -22,33 +22,33 @@
                 {% for x in data %}
             <div class="row mx-3">
 
-                <div class=" mx-auto px-3 mt-5">
+                <div class="col-md-4 mx-auto px-3 mt-5">
                     <div class="mb-3 mx-5">
                         <label for="name" class="form-label"><strong>Retailer Name</strong></label>
-                        <input type="text" class="form-control w-50" name="name" id="name" placeholder="Enter Name" required value="{{x.name}}">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name" required value="{{x.name}}">
                     </div>  
     
                     <div class="mb-3 mx-5 no-spinners">
                         <label for="d_no" class="form-label"><strong>Mobile Number</strong></label>
-                        <input type="number" class="form-control w-50" name="mob" id="d_no" placeholder="Enter Mobile No." required value="{{x.mob}}">
+                        <input type="number" class="form-control" name="mob" id="d_no" placeholder="Enter Mobile No." required value="{{x.mob}}">
                     </div>
                     
                 
                     <div class="mb-3 mx-5 no-spinners">
                         <label for="alt" class="form-label"><strong>Alternate Number</strong></label>
-                        <input type="number" class="form-control w-50" name="alt" id="alt" placeholder="Enter Alternate No." value="{{x.alternate}}">
+                        <input type="number" class="form-control" name="alt" id="alt" placeholder="Enter Alternate No." value="{{x.alternate}}">
                     </div>
                     <div class="mb-3 mx-5">
                         <label for="shop" class="form-label"><strong>Shop Name</strong></label>
-                        <input type="text" class="form-control w-50" name="shop" id="shop" placeholder="Enter Shop Name" required value="{{x.shop_name}}">
+                        <input type="text" class="form-control" name="shop" id="shop" placeholder="Enter Shop Name" required value="{{x.shop_name}}">
                     </div>
                     <div class="mb-3 mx-5">
                         <label for="city" class="form-label"><strong>City</strong></label>
-                        <input type="text" class="form-control w-50" name="city" id="city" placeholder="Enter City Name" required value="{{x.city}}">
+                        <input type="text" class="form-control" name="city" id="city" placeholder="Enter City Name" required value="{{x.city}}">
                     </div>
                     <div class="mb-3 mx-5">
                         <label for="state" class="form-label"><strong>State</strong></label>
-                        <input type="text" class="form-control w-50" name="state" id="state" placeholder="Enter State Name" required value="{{x.state}}">
+                        <input type="text" class="form-control" name="state" id="state" placeholder="Enter State Name" required value="{{x.state}}">
                     </div>
                     <div class="mb-3 mt-5 mx-5">
                         <input type="submit" class="btn btn-danger w-25" value="Add">
