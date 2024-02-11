@@ -1231,7 +1231,7 @@ def otp(request):
     url = 'https://control.msg91.com/api/v5/otp?mobile=919167827647'
     headers = {
         'accept': 'application/json',
-        'authkey': 'Enter your MSG91 authkey',
+        'authkey': '415844AdRjQ2Wt65c88d64P1',
         'content-type': 'application/json',
     }
 
