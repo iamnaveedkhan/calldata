@@ -1224,3 +1224,26 @@ def checking(request):
     except Exception as e:
         print(e)
         return JsonResponse({'status':True}, status=200)
+
+
+def otp(request):
+
+    url = 'https://control.msg91.com/api/v5/otp?mobile=919167827647'
+    headers = {
+        'accept': 'application/json',
+        'authkey': 'Enter your MSG91 authkey',
+        'content-type': 'application/json',
+    }
+
+    data = {
+        "Param1": "value1",
+        "Param2": "value2",
+        "Param3": "value3"
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+    print('Status Code:', response.status_code)
+    print('Response Content:', response.text)
+
+    
+    return HttpResponse("success")
