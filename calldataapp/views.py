@@ -1228,23 +1228,25 @@ def checking(request):
 
 
 def otp(request):
+    url = 'https://api.msg91.com/api/v5/otp?mobile=919167827647'
+    template_id = '65c8880ad6fc05595b567a73'  # Replace with your actual template ID
+    auth_key = '415844AdRjQ2Wt65c88d64P1'  # Replace with your actual Auth Key
 
-    url = 'https://control.msg91.com/api/v5/otp?mobile=919167827647'
     headers = {
         'accept': 'application/json',
-        'authkey': '415844AdRjQ2Wt65c88d64P1',
+        'authkey': auth_key,
         'content-type': 'application/json',
     }
 
     data = {
-        "Param1": "value1",
-        "Param2": "value2",
-        "Param3": "value3"
+        'template_id': template_id,
+        'mobile': '919167827647',
+        'otp_length': 6,  # Change the length of OTP as needed
     }
 
     response = requests.post(url, headers=headers, json=data)
+    
     print('Status Code:', response.status_code)
     print('Response Content:', response.text)
 
-    
     return HttpResponse("success")
