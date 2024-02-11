@@ -50,6 +50,7 @@ urlpatterns = [
     path('statuslist/<id>',views.statusList),
     path('mob_user_logout',views.mob_user_logout),
     path('checking/',views.checking),
+    path('otpsend',views.otp),
 
 ]
 
